@@ -1,0 +1,22 @@
+=head2 Mon Jul 25 08:17:23 2011: C<Module> L<Template|Template>
+
+=over 4
+
+=item *
+
+C<installed into: /var/www/cgi-bin/gsignal/development/modules/lib/perl5/site_perl/5.8.8>
+
+=item *
+
+C<LINKTYPE: dynamic>
+
+=item *
+
+C<VERSION: 2.22>
+
+=item *
+
+C<EXE_FILES: bin/tpage bin/ttree>
+
+=back
+

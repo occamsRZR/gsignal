@@ -1,0 +1,94 @@
+
+
+<table cellspacing="1" id="dataTable" class="tablesorter">	
+
+	<thead>
+	<!-- This is the header for the prey/bait table -->	
+	<tr>
+		
+        <th >Locus</th>
+        
+        <th class="{sorter: false}">Interaction</th>
+
+        <th class="{sorter: false}">Regulatory Information</th>
+        
+        <th>TAIR Description</th>       
+        
+        <th>cDNA Start</th>
+        
+        <th>Length  </th>
+        
+        <th class="Correlation">Mut.</th>
+        <th class="Correlation">Ana.</th>
+        <th class="Correlation">Dev.</th>
+        <th class="Correlation">Stim.</th>
+        
+    </tr>
+	</thead>
+    
+    <!-- This is where the content of the prey/bait table will go -->
+
+	<tbody>
+
+	[% FOREACH protein IN proteins(id) %]
+		<tr>
+			<!-- -->
+			<td>
+			<a target="_blank" href="http://www.arabidopsis.org/servlets/TairObject?name=[% protein.plocus %]&type=locus">
+			[% protein.plocus %]</td>
+			
+			
+			<!-- Here are all the interaction links -->
+            <td>
+                <a target="_blank" href="http://aquila.bio.nyu.edu/cgi-bin/NBrowseAppletProd\?-d=TAIR&-q=[% protein.plocus %]"><img src="files/images/logoSmall-tair2.gif" alt="Tair_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://bioinfolab.unl.edu/cgi-bin/nbrowse2/NBrowseAppletProd?-d=NBROWSE2_TEST2&-q=[% protein.plocus %]" ><img src="files/images/n_logo-small.gif" alt="N_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://atpid.biosino.org/simple_detail.php?pro=[% protein.plocus %]" verticle-align="center">AtPID</a>
+            </td>
+            
+            <!-- Regulatory Information Links -->
+            <td>
+                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtcisDB/atcisview.html?id=[% protein.plocus %]"> AtcisDB</a></br>
+                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtTFDB/tfsummary.html?locusid=[% protein.plocus %]"> AtTFDB</a></br>
+                <a target="_blank" href="http://atted.jp/data/locus/[% protein.plocus %].shtml"> ATTED</a>
+            </td>
+            
+			<!-- Protein description-->
+			<td>[% protein.desc %]</td>
+			<!-- -->
+			<td>[% protein.pcdna %]</td>
+			<!-- -->
+			<td>[% protein.plen %]</td>
+			<!-- Mutation -->
+		
+			[% USE fp = format('%0.3f') %]
+		<td[% IF protein.sig_mut %] class="significant"[% END %]>
+			[% fp(protein.corr_mut) %]
+		</td>	
+						<!-- Anatomy -->
+		<td[% IF protein.sig_ana %] class="significant"[% END %]>		
+			[% USE fp = format('%0.3f') %]
+		
+			[% fp(protein.corr_ana) %]
+		</td>	
+						<!-- Development -->
+			
+
+			
+			[% USE fp = format('%0.3f') %]
+		<td[% IF protein.sig_dev %] class="significant"[% END %]>
+			[% fp(protein.corr_dev) %]
+		</td>	
+			
+						<!-- Stimulus -->
+			
+
+			
+			[% USE fp = format('%0.3f') %]
+		<td[% IF protein.sig_stim %] class="significant"[% END %]>
+			[% fp(protein.corr_stim) %]
+		</td>
+			
+			
+	
+		</tr>
+	[% END %]
+	</tbody>
+

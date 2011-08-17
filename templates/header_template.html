@@ -1,0 +1,87 @@
+
+
+<html>
+	
+	<head>
+	
+	
+	<title>Arabidopsis G-Signaling Interactome</title> 
+
+    <!--[if IE]> <link rel="stylesheet" media="screen" type="text/css" href="files/style_for_IE.css" /> <![endif]--> 
+    <!--[if lte IE 6]> <link rel="stylesheet" media="screen" type="text/css" href="files/style_for_IE6.css" /> <![endif]--> 
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" /> 
+    
+
+	
+	<link rel="stylesheet" media="screen" type="text/css" href="css/style.css" />
+		
+	<script src="http://code.jquery.com/jquery-latest.js"></script> 
+	<script type="text/javascript" src="http://autobahn.tablesorter.com/jquery.tablesorter.js"></script> 
+	<script type="text/javascript" src="http://tablesorter.com/addons/pager/jquery.tablesorter.pager.js"></script> 
+	
+
+	<script type="text/javascript"> 
+
+	
+	$(document).ready(function(){
+		$("Mutation").hide();
+		$("Development").hide();
+		$("Anatomy").hide();
+		$("Stimulus").hide();
+	
+		$("#dataTable")
+			.tablesorter({widthFixed: true, widgets: ['zebra']}); 
+ 
+ 
+    $('.correlation').change(function () {
+	    $("Mutation").hide();
+	    $("Development").hide();
+	    $("Anatomy").hide();
+        $("Stimulus").hide();
+ 
+ 
+	    $(this.value).show();
+			})
+			.trigger('change');
+	    });
+		
+		
+		
+		
+	</script> 
+	
+
+	</head>
+	
+	
+	<body> 
+    <div id="page"> 
+	  <div id="header"> 
+	    <div id="logo"> 
+	    <!-- begin logo --> 
+		<p>Arabidopsis</p> 
+		<div id="slogan"><p>G-Signaling Interactome Database</p></div> 
+		<!-- end logo --> 
+		</div> 
+		<div id="nav"> 
+		  <div id="nav-menu-left"></div> 
+		  <div id="nav-menu"> 
+		  <!-- start of navigation --> 
+		    <ul> 
+			  <li class="nav-menuList"><a href="http://bioinfolab.unl.edu/emlab/Gsignal/index.pl">Home</a></li> 
+			  <li class="active"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=BAIT">Baits</a></li> 
+			  <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=PREY">Preys</a></li> 
+			  <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=NONE">Search DB</a></li> 
+              <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=HELP">Help</a></li> 
+              <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=LINKS">Links</a></li> 
+			</ul> 
+			<!-- end navigation --> 
+          </div> 
+		  <div id="nav-menu-right"></div> 
+		</div> 
+	  </div> 
+	  <div class="clearfloats"></div> 
+	<div id="content"> 
+	    <div class="content-padding"> 
+		  <!-- page content below --> 
+		  <table id="overallTable" width="100%"> 
