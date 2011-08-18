@@ -7,7 +7,10 @@ use CGI;
 use DBI;
 use Data::Dumper;
 
-
+my $query = new CGI;
+my $bid = $query->param('bid');
+my $nr = $query->param('nr');
+my $sort = $query->param('sort');
 
 #####
 ## Here's all the MySQL initialization
@@ -37,13 +40,21 @@ use Data::Dumper;
 ## Here's where all the MySQL stuff ends
 #####
 
+###
+# We are going to need to decide if this is a:
+## 1) Bait-prey interaction
+##    if so: use the baid id ($bid)
+## 2) Prey-bait interaction
+##    if so: use the prey's locus (?)
+###
 
+
+my $id = 2;
 
 my $header = 'templates/header_template.html';
 my $protein_info = 'templates/protein_info_template.html';
 my $footer = 'templates/footer_template.html';
 my $file = 'templates/table_template.html';
-my $id = 2;
 my $vars = {
     'message'  => "hello charlie",
 	'proteins' => \&get_data,

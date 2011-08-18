@@ -1,0 +1,52 @@
+
+/* TOP NAVIGATION BAR */
+#nav {
+  margin-top:118px;
+  margin-bottom:0px;
+}
+
+#nav-menu-left {
+  height:73px;
+}
+
+#nav-menu-right {
+  height:73px;
+}
+
+#nav-menu {
+  height:73px;
+}
+
+#nav-menu ul a
+{
+	padding-top: 0px;
+	line-height: 55px;
+}
+
+.nav-menuList {
+	line-height: 73px;
+	margin-top: 18px;
+}
+
+.active {
+	background:url(buttons/selectedB.gif) repeat-x bottom left;
+	float:left;
+	line-height: 73px;
+	margin-top: 18px;
+} 
+
+/* END NAVIGATION BAR */
+
+#footer-div
+{
+	background-color: #0b3305;
+}
+
+#footer
+{
+	height: 50px;
+  	margin-top: 0px;
+	margin-bottom: 0px;
+	padding-top: 3px;
+	padding-bottom: 13px;
+}

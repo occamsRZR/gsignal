@@ -1,0 +1,35 @@
+#logo
+{
+	margin-left: 9px;
+	padding-left: 9px;
+}
+
+#content {
+   width:952px;
+  margin-bottom 0px;
+  padding-top 0px;
+  padding-bottom 0px;
+}
+
+.content-padding {
+  width:952px;
+  margin: 0px 20px 0px 20px;
+  padding-bottom 0px;
+}
+
+/* help/link pages */
+
+#help {
+	padding: 0px;
+	margin: 30px;
+	}
+
+/* footer page */
+
+#footer p {
+  margin-top:3px;
+  margin-bottom:3px;
+}
+
+
+

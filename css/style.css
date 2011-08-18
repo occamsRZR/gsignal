@@ -72,6 +72,9 @@ td.main {
     background-color: #fdfefa;
     padding: 1em;
 }
+td.general {
+	font-size: 11px;
+}
 
 td.sidebar {
     width: 210px;
@@ -157,7 +160,7 @@ color:#AEF080;
 /* TOP NAVIGATION BAR */
 #nav {
   width:610px;
-  float: right;
+  float: left;
   margin-top:136px;
 }
 
