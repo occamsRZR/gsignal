@@ -8,7 +8,9 @@ use DBI;
 use Data::Dumper;
 
 my $query = new CGI;
-my $bid = $query->param('bid');
+my $view = $query->param('view');
+my $bid = $query->param('bait_id');
+my $plocus = $query->param('plocus');
 my $nr = $query->param('nr');
 my $sort = $query->param('sort');
 
@@ -91,13 +93,34 @@ $template->process($file, $vars)
 ##################################################
 sub get_info(){
     # These are the vars we need for this query
+    my $bid = shift;
+	my $plocus = shift;
+	my $sig = shift;
+	my $nr = shift;
+	
+	
+	
 	#####
 	# TODO
 	# We need to be able to pass whether it is a bait or a prey 
 	# so we can adjust the queries accordingly
+	# -----------
+	# How this will work:
+	# -----------
+	# One of five things need to happen:
+	#	1) We want a view of all of the interactions by the bait
+	#		?view=baits
+	#	2) We want a view of all the interactions by the prey
+	#		?view=preys
+	#	3) We want to view one bait's interactions by using the bait ID
+	#		?bait_id=XX
+	#	4) We want to view one of the prey's interactions by using the prey locus
+	#		?plocus=XXXXXXXXXX
+	#	5) We want to view a summary of all the interactions
+	#		?view=summary
 	#####
-    my $bid = shift;
-    my $nr = shift;
+	
+	
     
     # This will get information on the protein that is currently being looked at so it can be displayed 
 	# in the protein info box
@@ -230,15 +253,30 @@ sub get_info(){
 ##################################################
 sub get_data(){
 	# These are the three vars we need for this sql query
-	my $bid = shift;
+    my $bid = shift;
+	my $plocus = shift;
+	my $sig = shift;
 	my $nr = shift;
-	my $sort = shift;
 
 
 	#####
 	# TODO
 	# We need to be able to pass whether it is a bait or a prey 
 	# so we can adjust the queries accordingly
+	# -----------
+	# How this will work:
+	# -----------
+	# One of five things need to happen:
+	#	1) We want a view of all of the interactions by the bait
+	#		?view=baits
+	#	2) We want a view of all the interactions by the prey
+	#		?view=preys
+	#	3) We want to view one bait's interactions by using the bait ID
+	#		?bait_id=XX
+	#	4) We want to view one of the prey's interactions by using the prey locus
+	#		?plocus=XXXXXXXXXX
+	#	5) We want to view a summary of all the interactions
+	#		?view=summary
 	#####
 
 
