@@ -10,37 +10,38 @@ use Data::Dumper;
 my $query = new CGI;
 my $view = $query->param('view');
 my $bid = $query->param('bait_id');
-my $plocus = $query->param('plocus');
+my $p_locus = $query->param('plocus');
 my $nr = $query->param('nr');
-my $sort = $query->param('sort');
+my $sig = $query->param('sig');
 
 #####
 ## Here's all the MySQL initialization
 #####
-	# MySQL database information
-	my $dbName = 'gsignal';	
-	my $host = "bioinfolab.unl.edu";
-	my $user = "gprotein";
-	my $password = "gpa";
+# MySQL database information
+my $dbName = 'gsignal';	
+my $host = "bioinfolab.unl.edu";
+my $user = "gprotein";
+my $password = "gpa";
 
-	
-	
-	# Connection info, connect
-	my $connectionInfo = "dbi:mysql:$dbName:$host";
-	my $dbh = DBI->connect($connectionInfo, $user, $password) or die "Could not connect to $dbName: " . DBI->errstr;
+# Connection info, connect
+my $connectionInfo = "dbi:mysql:$dbName:$host";
+my $dbh = DBI->connect($connectionInfo, $user, $password) or die "Could not connect to $dbName: " . DBI->errstr;
 
-	# MySQL table information
-	my $baitTB = "bait";
-	my $interactTB = "interact";
-	my $libTB = "library";
-	my $tair = "tair9";
-	my $tairGO = "tair9_GO";
-	my $tairSQ = "tair9_seq";
-	my $corrCoef = "correlation";
-	
+# MySQL table information
+my $baitTB = "bait";
+my $interactTB = "interact";
+my $libTB = "library";
+my $tair = "tair9";
+my $tairGO = "tair9_GO";
+my $tairSQ = "tair9_seq";
+my $corrCoef = "correlation";
+
 #####
 ## Here's where all the MySQL stuff ends
 #####
+
+my ($info_sql, $data_sql) = build_queries($view, $bid, $p_locus, $sig, $nr);
+
 
 ###
 # We are going to need to decide if this is a:
@@ -75,6 +76,86 @@ $template->process($protein_info, $vars)
 $template->process($file, $vars) 
 	or die "Template process failed!\n", $template->error(), "\n";
 
+##################################################
+# build_queries
+#
+# DESCRIPTION: build the queries for the methods 
+#             using the bait_id/prey_locus
+#			 as well as the view and other params  
+#
+# IN
+#       $view			  : if we want to view either...
+#								-view all by each bait
+#								-view all by each prey
+#								-view a summary (how to group?)
+#		$id				  : id of the protein to be found
+#		$nr				  : BOOL to decide non-redundant
+#		
+#
+# OUT
+#       %proteins		  :   a hash with all the protein info
+##################################################
+sub build_queries{
+	my ($view, $bid, $p_locus, $sig, $nr) = @_;
+	
+	my ($info_sql, $data_sql);
+	
+	
+#### --------------------------------------------------------------------
+##   This section is deciding what kind of page/query we need to build	
+
+	# If we want to view all of the interactions by each bait
+	if($view eq "baits"){
+		### TODO
+		
+	}
+	# If we want to view all of the interactions by each prey locus
+	elsif($view eq "preys"){
+		### TODO
+		
+	}
+	# If we want to view all of the interactions as a summary (ALL interactions are displayed)
+	elsif($view eq "summary"){
+		### TODO
+		
+	}
+	# This only tests if the first four params are undefined, if so... just display a summary
+	elsif(($view == undef)  && ($bid == undef) && ($p_locus == undef) && ($sig == undef)){
+		$view = "summary";
+		# Here we might just end up re-calling this method
+	}
+	# Else the rest of these must be Bait specific or Prey specific interactions
+	else{
+		# If, for some reason, both the bait and prey is defined...
+		if($bid && $p_locus){
+			print "AHOY THERE MATEY! \n\n\n\n";
+			# Just throw this line up there and exit the program.
+			exit;
+		}
+		# Else if the Bait ID is defined, we can start building our query.
+		elsif($bid){
+			
+		}
+		# Else if the Prey locus is defined, we can start building our query.
+		elsif($p_locus){
+			
+		}
+		# Here, we assume neither are defined... for right now let's just throw another error and quit.
+		else{
+			print "AHOY THERE MATEY! \n\n\n\n";
+			# Just throw this line up there and exit the program.
+			exit;
+		}
+		
+		
+		
+	}
+	
+#### --------------------------------------------------------------------
+	
+	return ($info_sql, $data_sql);
+}
+
 
 	
 ##################################################
@@ -94,7 +175,7 @@ $template->process($file, $vars)
 sub get_info(){
     # These are the vars we need for this query
     my $bid = shift;
-	my $plocus = shift;
+	my $p_locus = shift;
 	my $sig = shift;
 	my $nr = shift;
 	
@@ -148,6 +229,41 @@ sub get_info(){
     $sth->bind_columns(\$blocus, \$bname, \$desc, \$aa_length, \$interactions);
     $sth->fetch();
 
+
+
+	# Store all of the gathered information in a temporary hash to be returned
+    my $temp_hash = {
+        'locus' => $blocus,
+        'name' => $bname,
+		'desc' => $desc,
+		'aa'   => $aa_length,
+		'int'  => $interactions,
+		'count_ana' => $count_ana, 
+		'count_mut' =>	$count_mut, 
+		'count_dev' =>	$count_dev, 
+		'count_stim' => $count_stim
+    };
+    
+    return $temp_hash;
+}
+
+
+
+##################################################
+# get_significant_count
+#
+# DESCRIPTION: get the number of significant 
+#             correlation coefficient for each bait/prey  
+#
+# IN
+#       $id				  : id of the protein to be found
+#		$nr				  : BOOL to decide non-redundant
+#
+# OUT
+#       @proteins		  :   an array of hashes with all the proteins is returned
+##################################################
+sub get_significant_count{
+	
 	# This long SQL query is to count how many significant proteins there are for each correlation attribute
 	my ($count_ana, $count_mut, $count_dev, $count_stim);
 	$sql = "SELECT 
@@ -211,7 +327,7 @@ sub get_info(){
 					;";
 	
 	# Prepare and execute the SQL statement
-	$sth = $dbh->prepare($sql)
+	my $sth = $dbh->prepare($sql)
 	   or die "Could not prepare statement: " . DBI->errstr;
 	$sth->execute()
 	   or die "Couldn't execute statement: " . $sth->errstr;
@@ -219,22 +335,10 @@ sub get_info(){
 	# Bind each of the four colomns to a different variable
     $sth->bind_columns(\$count_ana, \$count_mut, \$count_dev, \$count_stim);
 	$sth->fetch();
-
-	# Store all of the gathered information in a temporary hash to be returned
-    my $temp_hash = {
-        'locus' => $blocus,
-        'name' => $bname,
-		'desc' => $desc,
-		'aa'   => $aa_length,
-		'int'  => $interactions,
-		'count_ana' => $count_ana, 
-		'count_mut' =>	$count_mut, 
-		'count_dev' =>	$count_dev, 
-		'count_stim' => $count_stim
-    };
-    
-    return $temp_hash;
+	
+	return ($count_ana, $count_mut, $count_dev, $count_stim);
 }
+
 
 	
 ##################################################
@@ -254,7 +358,7 @@ sub get_info(){
 sub get_data(){
 	# These are the three vars we need for this sql query
     my $bid = shift;
-	my $plocus = shift;
+	my $p_locus = shift;
 	my $sig = shift;
 	my $nr = shift;
 
