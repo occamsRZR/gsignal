@@ -1,17 +1,9 @@
 my ONE BAIT QUERY = "
 		SELECT
-			$interactTB.BP_ID,
-			$interactTB.Library,
 			$interactTB.Prey_locus,
 			$interactTB.Prey_cDNA_start,
-			$interactTB.Notes,
-			$interactTB.Candidate_ID, 
 	
-			$tair.Symbol1,
-			$tair.Symbol2, 
 			$tair.Short_desc, 
-			$tair.Curator_summary, 
-			$tair.Comp_desc, 
 			$tair.AA_len, 
 			
 			$corrCoef.Corr_coeff_anatomy, 
@@ -33,18 +25,10 @@ my ONE BAIT QUERY = "
 			
 my ONE PREY QUERY = "
 	SELECT
-		$interactTB.BP_ID,
-		$interactTB.Library,
-		$interactTB.Prey_locus,
+		$bait.Bait_locus,
 		$interactTB.Prey_cDNA_start,
-		$interactTB.Notes,
-		$interactTB.Candidate_ID, 
 
-		$tair.Symbol1,
-		$tair.Symbol2, 
 		$tair.Short_desc, 
-		$tair.Curator_summary, 
-		$tair.Comp_desc, 
 		$tair.AA_len, 
 
 		$corrCoef.Corr_coeff_anatomy, 
@@ -58,8 +42,50 @@ my ONE PREY QUERY = "
 	FROM 
 		$interactTB, 
 		$tair, 
-		$corrCoef
-	      WHERE 
+		$corrCoef,
+		$bait
+	WHERE 
 		$interactTB.Prey_locus = $tair.Locus AND
 		$interactTB.BP_ID = $corrCoef.BP_ID AND
-		$interactTB.Bait_ID = $bid";
+		$interactTB.Bait_ID = $bait.Bait_ID AND
+		$interactTB.Prey_locus = $p_locus";
+		
+
+# This will get information on the protein that is currently being looked at so it can be displayed 
+		# in the protein info box
+my ONE BAIT INFO QUERY = "SELECT 
+	                    $baitTB.Bait_locus, 
+						$baitTB.Bait_name,
+
+						$tair.Short_desc,
+						$tair.AA_len,
+
+						count(*)
+	                FROM 
+	                    $baitTB,
+						$tair,
+						$interactTB
+	                WHERE 
+						$baitTB.Bait_locus = $tair.Locus AND
+						$interactTB.Bait_ID = $baitTB.Bait_ID AND
+	                    $baitTB.Bait_ID = $bid;";
+
+
+# This will get information on the protein that is currently being looked at so it can be displayed 
+		# in the protein info box
+my ONE PREY INFO QUERY = "SELECT 
+	                    $baitTB.Bait_locus, 
+						$baitTB.Bait_name,
+
+						$tair.Short_desc,
+						$tair.AA_len,
+
+						count(*)
+	                FROM 
+						$tair,
+						$interactTB
+	                WHERE 
+						$interactTB.Bait_locus = $tair.Locus AND
+	                    $baitTB.Bait_ID = $bid;";
+	
+	

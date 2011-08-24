@@ -1,0 +1,412 @@
+
+
+<html>
+	
+	<head>
+	
+	
+	<title>Arabidopsis G-Signaling Interactome</title> 
+
+    <!--[if IE]> <link rel="stylesheet" media="screen" type="text/css" href="files/style_for_IE.css" /> <![endif]--> 
+    <!--[if lte IE 6]> <link rel="stylesheet" media="screen" type="text/css" href="files/style_for_IE6.css" /> <![endif]--> 
+    <meta http-equiv="Content-type" content="text/html;charset=UTF-8" /> 
+    
+
+	
+	<link rel="stylesheet" media="screen" type="text/css" href="css/style.css" />
+		
+	<script src="http://code.jquery.com/jquery-latest.js"></script> 
+	<script type="text/javascript" src="http://autobahn.tablesorter.com/jquery.tablesorter.js"></script> 
+	<script type="text/javascript" src="http://tablesorter.com/addons/pager/jquery.tablesorter.pager.js"></script> 
+	
+
+	<script type="text/javascript"> 
+
+	
+	$(document).ready(function(){
+		$("Mutation").hide();
+		$("Development").hide();
+		$("Anatomy").hide();
+		$("Stimulus").hide();
+	
+		$("#dataTable")
+			.tablesorter({widthFixed: true, widgets: ['zebra']}); 
+ 
+ 
+    $('.correlation').change(function () {
+	    $("Mutation").hide();
+	    $("Development").hide();
+	    $("Anatomy").hide();
+        $("Stimulus").hide();
+ 
+ 
+	    $(this.value).show();
+			})
+			.trigger('change');
+	    });
+		
+		
+		
+		
+	</script> 
+	
+
+	</head>
+	
+	
+	<body> 
+    <div id="page"> 
+	  <div id="header"> 
+	    <div id="logo"> 
+	    <!-- begin logo --> 
+		<p>Arabidopsis</p> 
+		<div id="slogan"><p>G-Signaling Interactome Database</p></div> 
+		<!-- end logo --> 
+		</div> 
+		<div id="nav"> 
+		  <div id="nav-menu-left"></div> 
+		  <div id="nav-menu"> 
+		  <!-- start of navigation --> 
+		    <ul> 
+			  <li class="nav-menuList"><a href="http://bioinfolab.unl.edu/emlab/Gsignal/index.pl">Home</a></li> 
+			  <li class="active"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=BAIT">Baits</a></li> 
+			  <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=PREY">Preys</a></li> 
+			  <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=NONE">Search DB</a></li> 
+              <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=HELP">Help</a></li> 
+              <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=LINKS">Links</a></li> 
+			</ul> 
+			<!-- end navigation --> 
+          </div> 
+		  <div id="nav-menu-right"></div> 
+		</div> 
+	  </div> 
+	  <div class="clearfloats"></div> 
+	<div id="content" class="round"> 
+	    <div class="content-padding"> 
+		  <!-- page content below --> 
+		  <table id="overallTable" width="100%"> 
+</br>
+<h1>Interaction Information:</h1>
+<table class="info" summary="Protein information">
+	<tr>
+		<td class="main round">
+			<img src="files/NBrowseStaticImages/BaitsPrey/AT1G35720.jpg" height="180px"> </br>				
+				
+		</td>
+		
+		<td class="general">
+
+			<img id="#visBrowserLogo" src="css/images/logo-tair2.gif" alt="N_logo" width="25" height="18" align="bottom">Launch N-Browse w/ TAIR interactome. </br>
+			<img src="css/images/n_logo.gif" alt="N_logo" width="14" height="18" align="bottom">Launch N-Browse w/ G-signaling interactome.
+		</td>
+		                
+        <td class="sidebar round"> 
+			<strong><u>Protein Info</u></strong></br>
+			<strong>Name:</strong> ANNAT1</br>
+			<strong>Locus:</strong> AT1G35720</br>
+			<strong>Number of Interactions:</strong> 4</br>
+			<strong>Length:</strong> 317aa</br>
+			<strong>Description:</strong> ANNAT1 (ANNEXIN ARABIDOPSIS 1); ATP binding / calcium ion binding / calcium-dependent phospholipid binding / copper ion binding / peroxidase/ protein homodimerization</br></br>
+			
+	   
+            Listed below are the cutoff values for each of the correlation coefficients. </br>
+			Below that is the number of significant proteins for each coefficient as well as a link(TODO)  </br>
+     
+            <table class="cutoffs" summary="All the cutoff values">
+                <tr>
+                    <td class="cutoffs"><b>Mut.</b></td>
+                    <td class="cutoffs"><b>Ana.</b></td>
+                    <td class="cutoffs"><b>Dev.</b></td>
+                    <td class="cutoffs"><b>Stim.</b></td>
+                    </b>              
+                </tr>
+                <tr>
+                    <td class="cutoffs">0.135</td>
+                    <td class="cutoffs">0.383</td>
+                    <td class="cutoffs">0.905</td>
+                    <td class="cutoffs">0.138</td>
+                </tr>
+                <tr>
+                    <td class="cutoffs">0</td>
+                    <td class="cutoffs">0</td>
+                    <td class="cutoffs">0</td>
+                    <td class="cutoffs">0</td>
+                </tr>
+                
+                
+            </table>
+        </td>
+			
+	</tr>
+</table>
+
+
+<table cellspacing="1" id="dataTable" class="tablesorter">	
+
+	<thead>
+	<!-- This is the header for the prey/bait table -->	
+	<tr>
+		
+        <th >Locus</th>
+        
+        <th class="{sorter: false}">Interaction</th>
+
+        <th class="{sorter: false}">Regulatory Information</th>
+        
+        <th>TAIR Description</th>       
+        
+        <th>cDNA Start</th>
+        
+        <th>Length  </th>
+        
+        <th class="Correlation">Mut.</th>
+        <th class="Correlation">Ana.</th>
+        <th class="Correlation">Dev.</th>
+        <th class="Correlation">Stim.</th>
+        
+    </tr>
+	</thead>
+    
+    <!-- This is where the content of the prey/bait table will go -->
+
+	<tbody>
+
+	
+		<tr>
+			<!-- -->
+			<td>
+			<a target="_blank" href="http://www.arabidopsis.org/servlets/TairObject?name=AT3G61480&type=locus">
+			AT3G61480</td>
+			
+			
+			<!-- Here are all the interaction links -->
+            <td>
+                <a target="_blank" href="http://aquila.bio.nyu.edu/cgi-bin/NBrowseAppletProd\?-d=TAIR&-q=AT3G61480"><img src="css/images/logoSmall-tair2.gif" alt="Tair_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://bioinfolab.unl.edu/cgi-bin/nbrowse2/NBrowseAppletProd?-d=NBROWSE2_TEST2&-q=AT3G61480" ><img src="css/images/n_logo-small.gif" alt="N_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://atpid.biosino.org/simple_detail.php?pro=AT3G61480" verticle-align="center">AtPID</a>
+            </td>
+            
+            <!-- Regulatory Information Links -->
+            <td>
+                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtcisDB/atcisview.html?id=AT3G61480"> AtcisDB</a></br>
+                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtTFDB/tfsummary.html?locusid=AT3G61480"> AtTFDB</a></br>
+                <a target="_blank" href="http://atted.jp/data/locus/AT3G61480.shtml"> ATTED</a>
+            </td>
+            
+			<!-- Protein description-->
+			<td>FUNCTIONS IN: molecular_function unknown; INVOLVED IN: biological_process unknown; LOCATED IN: cellular_component unknown; EXPRESSED IN: male gametophyte, cultured cell, pollen tube; EXPRESSED DURING: L mature pollen stage, M germinated pollen stage; CONTAINS InterPro DOMAIN/s: Protein of unknown function DUF1339 (InterPro:IPR009771), WD40/YVTN repeat-like (InterPro:IPR015943), Quinoprotein amine dehydrogenase, beta chain-like (InterPro:IPR011044); BEST Arabidopsis thaliana protein match is: unknown protein (TAIR:AT5G28350.2); Has 245 Blast hits to 227 proteins in 108 species: Archae - 0; Bacteria - 13; Metazoa - 104; Fungi - 64; Plants - 29; Viruses - 0; Other Eukaryotes - 35 (source: NCBI BLink).</td>
+			<!-- -->
+			<td>3062</td>
+			<!-- -->
+			<td>1091</td>
+			<!-- Mutation -->
+		
+			
+		<td>
+			0.000
+		</td>	
+						<!-- Anatomy -->
+		<td>		
+			
+		
+			0.000
+		</td>	
+						<!-- Development -->
+			
+
+			
+			
+		<td>
+			0.000
+		</td>	
+			
+						<!-- Stimulus -->
+			
+
+			
+			
+		<td>
+			0.000
+		</td>
+			
+			
+	
+		</tr>
+	
+		<tr>
+			<!-- -->
+			<td>
+			<a target="_blank" href="http://www.arabidopsis.org/servlets/TairObject?name=AT3G61480&type=locus">
+			AT3G61480</td>
+			
+			
+			<!-- Here are all the interaction links -->
+            <td>
+                <a target="_blank" href="http://aquila.bio.nyu.edu/cgi-bin/NBrowseAppletProd\?-d=TAIR&-q=AT3G61480"><img src="css/images/logoSmall-tair2.gif" alt="Tair_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://bioinfolab.unl.edu/cgi-bin/nbrowse2/NBrowseAppletProd?-d=NBROWSE2_TEST2&-q=AT3G61480" ><img src="css/images/n_logo-small.gif" alt="N_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://atpid.biosino.org/simple_detail.php?pro=AT3G61480" verticle-align="center">AtPID</a>
+            </td>
+            
+            <!-- Regulatory Information Links -->
+            <td>
+                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtcisDB/atcisview.html?id=AT3G61480"> AtcisDB</a></br>
+                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtTFDB/tfsummary.html?locusid=AT3G61480"> AtTFDB</a></br>
+                <a target="_blank" href="http://atted.jp/data/locus/AT3G61480.shtml"> ATTED</a>
+            </td>
+            
+			<!-- Protein description-->
+			<td>FUNCTIONS IN: molecular_function unknown; INVOLVED IN: biological_process unknown; LOCATED IN: cellular_component unknown; EXPRESSED IN: male gametophyte, cultured cell, pollen tube; EXPRESSED DURING: L mature pollen stage, M germinated pollen stage; CONTAINS InterPro DOMAIN/s: Protein of unknown function DUF1339 (InterPro:IPR009771), WD40/YVTN repeat-like (InterPro:IPR015943), Quinoprotein amine dehydrogenase, beta chain-like (InterPro:IPR011044); BEST Arabidopsis thaliana protein match is: unknown protein (TAIR:AT5G28350.2); Has 245 Blast hits to 227 proteins in 108 species: Archae - 0; Bacteria - 13; Metazoa - 104; Fungi - 64; Plants - 29; Viruses - 0; Other Eukaryotes - 35 (source: NCBI BLink).</td>
+			<!-- -->
+			<td>3061</td>
+			<!-- -->
+			<td>1091</td>
+			<!-- Mutation -->
+		
+			
+		<td>
+			0.000
+		</td>	
+						<!-- Anatomy -->
+		<td>		
+			
+		
+			0.000
+		</td>	
+						<!-- Development -->
+			
+
+			
+			
+		<td>
+			0.000
+		</td>	
+			
+						<!-- Stimulus -->
+			
+
+			
+			
+		<td>
+			0.000
+		</td>
+			
+			
+	
+		</tr>
+	
+		<tr>
+			<!-- -->
+			<td>
+			<a target="_blank" href="http://www.arabidopsis.org/servlets/TairObject?name=AT3G61480&type=locus">
+			AT3G61480</td>
+			
+			
+			<!-- Here are all the interaction links -->
+            <td>
+                <a target="_blank" href="http://aquila.bio.nyu.edu/cgi-bin/NBrowseAppletProd\?-d=TAIR&-q=AT3G61480"><img src="css/images/logoSmall-tair2.gif" alt="Tair_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://bioinfolab.unl.edu/cgi-bin/nbrowse2/NBrowseAppletProd?-d=NBROWSE2_TEST2&-q=AT3G61480" ><img src="css/images/n_logo-small.gif" alt="N_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://atpid.biosino.org/simple_detail.php?pro=AT3G61480" verticle-align="center">AtPID</a>
+            </td>
+            
+            <!-- Regulatory Information Links -->
+            <td>
+                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtcisDB/atcisview.html?id=AT3G61480"> AtcisDB</a></br>
+                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtTFDB/tfsummary.html?locusid=AT3G61480"> AtTFDB</a></br>
+                <a target="_blank" href="http://atted.jp/data/locus/AT3G61480.shtml"> ATTED</a>
+            </td>
+            
+			<!-- Protein description-->
+			<td>FUNCTIONS IN: molecular_function unknown; INVOLVED IN: biological_process unknown; LOCATED IN: cellular_component unknown; EXPRESSED IN: male gametophyte, cultured cell, pollen tube; EXPRESSED DURING: L mature pollen stage, M germinated pollen stage; CONTAINS InterPro DOMAIN/s: Protein of unknown function DUF1339 (InterPro:IPR009771), WD40/YVTN repeat-like (InterPro:IPR015943), Quinoprotein amine dehydrogenase, beta chain-like (InterPro:IPR011044); BEST Arabidopsis thaliana protein match is: unknown protein (TAIR:AT5G28350.2); Has 245 Blast hits to 227 proteins in 108 species: Archae - 0; Bacteria - 13; Metazoa - 104; Fungi - 64; Plants - 29; Viruses - 0; Other Eukaryotes - 35 (source: NCBI BLink).</td>
+			<!-- -->
+			<td>3058</td>
+			<!-- -->
+			<td>1091</td>
+			<!-- Mutation -->
+		
+			
+		<td>
+			0.000
+		</td>	
+						<!-- Anatomy -->
+		<td>		
+			
+		
+			0.000
+		</td>	
+						<!-- Development -->
+			
+
+			
+			
+		<td>
+			0.000
+		</td>	
+			
+						<!-- Stimulus -->
+			
+
+			
+			
+		<td>
+			0.000
+		</td>
+			
+			
+	
+		</tr>
+	
+		<tr>
+			<!-- -->
+			<td>
+			<a target="_blank" href="http://www.arabidopsis.org/servlets/TairObject?name=AT4G09030&type=locus">
+			AT4G09030</td>
+			
+			
+			<!-- Here are all the interaction links -->
+            <td>
+                <a target="_blank" href="http://aquila.bio.nyu.edu/cgi-bin/NBrowseAppletProd\?-d=TAIR&-q=AT4G09030"><img src="css/images/logoSmall-tair2.gif" alt="Tair_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://bioinfolab.unl.edu/cgi-bin/nbrowse2/NBrowseAppletProd?-d=NBROWSE2_TEST2&-q=AT4G09030" ><img src="css/images/n_logo-small.gif" alt="N_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://atpid.biosino.org/simple_detail.php?pro=AT4G09030" verticle-align="center">AtPID</a>
+            </td>
+            
+            <!-- Regulatory Information Links -->
+            <td>
+                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtcisDB/atcisview.html?id=AT4G09030"> AtcisDB</a></br>
+                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtTFDB/tfsummary.html?locusid=AT4G09030"> AtTFDB</a></br>
+                <a target="_blank" href="http://atted.jp/data/locus/AT4G09030.shtml"> ATTED</a>
+            </td>
+            
+			<!-- Protein description-->
+			<td>AGP10 (ARABINOGALACTAN PROTEIN 10)</td>
+			<!-- -->
+			<td>-4</td>
+			<!-- -->
+			<td>127</td>
+			<!-- Mutation -->
+		
+			
+		<td>
+			0.102
+		</td>	
+						<!-- Anatomy -->
+		<td>		
+			
+		
+			0.162
+		</td>	
+						<!-- Development -->
+			
+
+			
+			
+		<td>
+			-0.119
+		</td>	
+			
+						<!-- Stimulus -->
+			
+
+			
+			
+		<td>
+			-0.042
+		</td>
+			
+			
+	
+		</tr>
+	
+	</tbody>
+

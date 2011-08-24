@@ -30,32 +30,32 @@
 
 	<tbody>
 
-	[% FOREACH protein IN proteins(id) %]
+	[% FOREACH protein IN proteins %]
 		<tr>
 			<!-- -->
 			<td>
-			<a target="_blank" href="http://www.arabidopsis.org/servlets/TairObject?name=[% protein.plocus %]&type=locus">
-			[% protein.plocus %]</td>
+			<a target="_blank" href="http://www.arabidopsis.org/servlets/TairObject?name=[% protein.locus %]&type=locus">
+			[% protein.locus %]</td>
 			
 			
 			<!-- Here are all the interaction links -->
             <td>
-                <a target="_blank" href="http://aquila.bio.nyu.edu/cgi-bin/NBrowseAppletProd\?-d=TAIR&-q=[% protein.plocus %]"><img src="css/images/logoSmall-tair2.gif" alt="Tair_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://bioinfolab.unl.edu/cgi-bin/nbrowse2/NBrowseAppletProd?-d=NBROWSE2_TEST2&-q=[% protein.plocus %]" ><img src="css/images/n_logo-small.gif" alt="N_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://atpid.biosino.org/simple_detail.php?pro=[% protein.plocus %]" verticle-align="center">AtPID</a>
+                <a target="_blank" href="http://aquila.bio.nyu.edu/cgi-bin/NBrowseAppletProd\?-d=TAIR&-q=[% protein.locus %]"><img src="css/images/logoSmall-tair2.gif" alt="Tair_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://bioinfolab.unl.edu/cgi-bin/nbrowse2/NBrowseAppletProd?-d=NBROWSE2_TEST2&-q=[% protein.locus %]" ><img src="css/images/n_logo-small.gif" alt="N_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://atpid.biosino.org/simple_detail.php?pro=[% protein.locus %]" verticle-align="center">AtPID</a>
             </td>
             
             <!-- Regulatory Information Links -->
             <td>
-                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtcisDB/atcisview.html?id=[% protein.plocus %]"> AtcisDB</a></br>
-                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtTFDB/tfsummary.html?locusid=[% protein.plocus %]"> AtTFDB</a></br>
-                <a target="_blank" href="http://atted.jp/data/locus/[% protein.plocus %].shtml"> ATTED</a>
+                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtcisDB/atcisview.html?id=[% protein.locus %]"> AtcisDB</a></br>
+                <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtTFDB/tfsummary.html?locusid=[% protein.locus %]"> AtTFDB</a></br>
+                <a target="_blank" href="http://atted.jp/data/locus/[% protein.locus %].shtml"> ATTED</a>
             </td>
             
 			<!-- Protein description-->
 			<td>[% protein.desc %]</td>
 			<!-- -->
-			<td>[% protein.pcdna %]</td>
+			<td>[% protein.cdna %]</td>
 			<!-- -->
-			<td>[% protein.plen %]</td>
+			<td>[% protein.len %]</td>
 			<!-- Mutation -->
 		
 			[% USE fp = format('%0.3f') %]
