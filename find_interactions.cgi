@@ -1,9 +1,5 @@
 #/usr/bin/perl -T
 
-BEGIN{
-	unshift @INC, "/var/www/cgi-bin/gsignal/development/gsignal/modules/lib64/perl5/site_perl/5.8.8/x86_64-linux-thread-multi";
-}
-
 use strict;
 use warnings;
 use Template;
