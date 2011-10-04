@@ -1,4 +1,10 @@
-#/usr/bin/perl -T
+#!/usr/bin/perl -T
+
+BEGIN{
+    unshift @INC, "./modules/lib64/perl5/site_perl/5.8.8/x86_64-linux-thread-multi";
+}
+
+print "Content-Type: text/html\n\n";
 
 use strict;
 use warnings;
@@ -44,7 +50,7 @@ my $corrCoef = "correlation";
 
 #$p_locus = "AT1G02870";
 
-$bid = 20;
+$bid = 2;
 
 my ($info_sql, $data_sql) = build_queries();
 
@@ -71,6 +77,9 @@ $template->process($protein_info, $vars)
 	or die "Template process failed!\n", $template->error(), "\n";
 	
 $template->process($file, $vars) 
+	or die "Template process failed!\n", $template->error(), "\n";
+
+$template->process($footer) 
 	or die "Template process failed!\n", $template->error(), "\n";
 
 ##################################################
