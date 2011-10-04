@@ -1,0 +1,54 @@
+</br>
+<h1>Interaction Information:</h1>
+<table class="info" summary="Protein information">
+	<tr>
+		<td class="main round">
+			<img src="/emlab/Gsignal/files/NBrowseStaticImages/BaitsPrey/[% info(id).locus %].jpg" height="180px"> </br>				
+				
+		</td>
+		
+		<td class="general">
+
+			<img id="#visBrowserLogo" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/logo-tair2.gif" alt="N_logo" width="25" height="18" align="bottom">Launch N-Browse w/ TAIR interactome. </br>
+			<img src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/n_logo.gif" alt="N_logo" width="14" height="18" align="bottom">Launch N-Browse w/ G-signaling interactome.
+		</td>
+		                
+        <td class="sidebar round"> 
+			<strong><u>Protein Info</u></strong></br>
+			<strong>Name:</strong> [% info(id).name %]</br>
+			<strong>Locus:</strong> [% info(id).locus %]</br>
+			<strong>Number of Interactions:</strong> [% info(id).int %]</br>
+			<strong>Length:</strong> [% info(id).aa %]aa</br>
+			<strong>Description:</strong> [% info(id).desc %]</br></br>
+			
+	   
+            Listed below are the cutoff values for each of the correlation coefficients. </br>
+			Below that is the number of significant proteins for each coefficient as well as a link(TODO)  </br>
+     
+            <table class="cutoffs" summary="All the cutoff values">
+                <tr>
+                    <td class="cutoffs"><b>Mut.</b></td>
+                    <td class="cutoffs"><b>Ana.</b></td>
+                    <td class="cutoffs"><b>Dev.</b></td>
+                    <td class="cutoffs"><b>Stim.</b></td>
+                    </b>              
+                </tr>
+                <tr>
+                    <td class="cutoffs">0.135</td>
+                    <td class="cutoffs">0.383</td>
+                    <td class="cutoffs">0.905</td>
+                    <td class="cutoffs">0.138</td>
+                </tr>
+                <tr>
+                    <td class="cutoffs">[% info(id).count_mut %]</td>
+                    <td class="cutoffs">[% info(id).count_ana %]</td>
+                    <td class="cutoffs">[% info(id).count_dev %]</td>
+                    <td class="cutoffs">[% info(id).count_stim %]</td>
+                </tr>
+                
+                
+            </table>
+        </td>
+			
+	</tr>
+</table>
