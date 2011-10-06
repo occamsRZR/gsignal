@@ -46,41 +46,84 @@ my $corrCoef = "correlation";
 ## Here's where all the MySQL stuff ends
 #####
 
-#$p_locus = "AT3G05920";
+process();
 
-#$p_locus = "AT1G02870";
-
-$bid = 2;
-
-my ($info_sql, $data_sql) = build_queries();
-
-
-my $header = 'templates/header_template.html';
-my $protein_info = 'templates/protein_info_template.html';
-my $footer = 'templates/footer_template.html';
-my $file = 'templates/table_template.html';
-
-my $proteins = &get_data($data_sql);
-my $info = &get_info($info_sql);
-
-my $vars = {
-	'proteins' => $proteins,
-	'info'     => $info
-};
-
-my $template = Template->new();
-
-$template->process($header) 			
-	or die "Template process failed!\n", $template->error(), "\n";
-
-$template->process($protein_info, $vars) 
-	or die "Template process failed!\n", $template->error(), "\n";
 	
-$template->process($file, $vars) 
-	or die "Template process failed!\n", $template->error(), "\n";
+##################################################
+# process
+#
+# DESCRIPTION: process all of the SQLs and Templates 
+#               depending on which is defined:
+#               view, 
+#               bid 
+#               or p_locus
+#			 
+#
+# IN    : These will not be passed into the method, just grabbing
+#           the variables from the CGI
+#
+#       $view			  : if we want to view either...
+#								-view all by each bait
+#								-view all by each prey
+#								-view a summary (how to group?)
+#		$bid			  : bait id of the protein to be found
+#       $p_locus          : prey locus of the protein to be found
+#		$nr				  : BOOL to decide non-redundant
+#		
+#
+# OUT
+#       Nothing is returned, just processed and displayed
+##################################################	
+sub process{
+    # We need to build the SQLs 
+    my ($info_sql, $data_sql) = build_queries();
+    
+    # Define all of the templates we are going to be using
+    my $header = 'templates/header_template.html';
+    my $footer = 'templates/footer_template.html';
+    my $protein_table = 'templates/protein_template.html';
+    my $summary_table = 'templates/summary_template.html';
+    my $protein_info = 'templates/protein_info_template.html';
+    my $summary_info = 'templates/summary_info_template.html';
+    
+    my $proteins = get_data($data_sql);
+    my $info = get_info($info_sql);
 
-$template->process($footer) 
-	or die "Template process failed!\n", $template->error(), "\n";
+    my $vars = {
+	    'proteins' => $proteins,
+	    'info'     => $info
+    };
+    
+    my $template = Template->new();
+
+    $template->process($header) 			
+        or die "Template process failed!\n", $template->error(), "\n";
+    
+
+    
+    # If view is defined, process the summary table
+    if($view){
+        # This is the info pane at the top for the summary pages
+        $template->process($summary_info, $vars) 
+            or die "Template process failed!\n", $template->error(), "\n";
+        # This is the summary table    
+        $template->process($summary_table, $vars) 
+            or die "Template process failed!\n", $template->error(), "\n";
+    }
+    else{
+        # This is the info pane at the top for the protein pages
+        $template->process($protein_info, $vars) 
+            or die "Template process failed!\n", $template->error(), "\n";
+    
+        $template->process($protein_table, $vars) 
+            or die "Template process failed!\n", $template->error(), "\n";
+    }
+    
+    $template->process($footer) 
+        or die "Template process failed!\n", $template->error(), "\n";
+
+}
+
 
 ##################################################
 # build_queries
@@ -149,8 +192,106 @@ sub build_queries{
 	if($view){
 		# If we want to view all of the interactions by each bait
 		if($view eq "baits"){
-			### TODO
-		
+			# This query we want to display all of the interactions 
+			# GROUPed BY the Bait_ID
+			# We will need to select:
+			## Bait_locus
+			## Short_desc
+			## AA_len
+			## count(*) - count the number of interactions for every bait ID
+			## count_anatomy
+			## count_development
+			## count_mutation
+			## count_stimulus
+		    $data_sql = "
+                SELECT
+		            bait.Bait_ID,
+                    Bait_locus,
+                    Short_desc,
+                    AA_len,
+                    count(*) AS interactions,
+                    (
+                        SELECT
+                    		count(*)
+                    	FROM
+                    		correlation,
+                    		interact
+                    	WHERE
+                    		Sig_anatomy=1
+                    	AND
+                    		interact.Bait_ID = bait.Bait_ID
+                    	AND
+                    		interact.BP_ID = correlation.BP_ID
+                    )
+                    AS
+                    	count_anatomy,	
+                   	(
+                        SELECT
+                    		count(*)
+                    	FROM
+                    		correlation,
+                    		interact
+                    	WHERE
+                    		Sig_mutation=1
+                    	AND
+                    		interact.Bait_ID = bait.Bait_ID
+                    	AND
+                    		interact.BP_ID = correlation.BP_ID
+                    )
+                    AS
+                    	count_mutation,
+					(
+                        SELECT
+                    		count(*)
+                    	FROM
+                    		correlation,
+                    		interact
+                    	WHERE
+                    		Sig_development=1
+                    	AND
+                    		interact.Bait_ID = bait.Bait_ID
+                    	AND
+                    		interact.BP_ID = correlation.BP_ID
+                    )
+                    AS
+                    	count_development,
+                    (
+                        SELECT
+                    		count(*)
+                    	FROM
+                    		correlation,
+                    		interact
+                    	WHERE
+                    		Sig_stimulus=1
+                    	AND
+                    		interact.Bait_ID = bait.Bait_ID
+                    	AND
+                    		interact.BP_ID = correlation.BP_ID
+                    )
+                    AS
+                    	count_stimulus
+                FROM 
+                    bait,
+                    tair9,
+                    interact
+                WHERE
+                    tair9.Locus = bait.Bait_locus  AND
+                    interact.Bait_ID = bait.Bait_ID
+                GROUP BY
+                    bait.Bait_ID 
+                    ;
+		    ";
+		    
+            $info_sql = "
+                SELECT
+                    count(*)
+                FROM
+                    interact;
+            
+            ";
+		    
+		    
+		    
 		}
 		# If we want to view all of the interactions by each prey locus
 		elsif($view eq "preys"){
@@ -251,7 +392,7 @@ sub build_queries{
 		}
 		# Else if the Prey locus is defined, we can start building our query.
 		elsif($p_locus){
-			# This is the select part of the SQL query
+			# This is the select part of the SQL query we need to add for the p_locus
 			$select_statement .= "
 				$baitTB.Bait_locus,
 				$interactTB.Prey_cDNA_start
@@ -345,7 +486,16 @@ sub get_info(){
     $sth->execute()
         or die "Couldn't execute statement: " . $sth->errstr;
     my ($interactions, $desc, $aa_length, $locus, $name);
-    $sth->bind_columns(\$interactions, \$desc, \$aa_length, \$locus, \$name);
+    
+    # Unless view is defined, get the interaction info for this bait/prey
+    unless($view){    
+        $sth->bind_columns(\$interactions, \$desc, \$aa_length, \$locus, \$name);
+    }
+
+    elsif($view eq "baits"){
+        $sth->bind_columns(\$interactions);
+    }
+    
     $sth->fetch();
 
 	my ($count_ana, $count_mut, $count_dev, $count_stim) = get_significant_count();
@@ -390,15 +540,14 @@ sub get_significant_count{
 	
 	# If we have our bait_id defined, make the query equal to it
 	if($bid){
-		$query = "$interactTB.Bait_ID = $bid";
+		$query = "AND $interactTB.Bait_ID = $bid";
 	}
 	# If we have our prey_locus defined, make the query equal to it.
 	elsif($p_locus){
-		$query = "$interactTB.Prey_locus = '$p_locus'";
+		$query = "AND $interactTB.Prey_locus = '$p_locus'";
 	}
 	else{
-		print "I don't know if this is right!";
-		exit;
+        $query = "";
 	}
 	
 	# This long SQL query is to count how many significant proteins there are for each correlation attribute
@@ -412,7 +561,7 @@ sub get_significant_count{
 						Sig_anatomy=1 
 					AND 
 						$interactTB.BP_ID = $corrCoef.BP_ID 
-					AND 
+					 
 						$query) 
 					AS 
 						count_anatomy,
@@ -426,7 +575,7 @@ sub get_significant_count{
 						Sig_mutation=1 
 					AND 
 						$interactTB.BP_ID = $corrCoef.BP_ID 
-					AND 
+					 
 						$query) 
 					AS 
 						count_mutation,
@@ -440,11 +589,11 @@ sub get_significant_count{
 						Sig_development=1 
 					AND 
 						$interactTB.BP_ID = $corrCoef.BP_ID 
-					AND 
+					 
 						$query) 
 					AS 
 						count_development,
-
+                    
 					(SELECT 
 						count(*) 
 					FROM 
@@ -454,7 +603,7 @@ sub get_significant_count{
 						Sig_stimulus=1 
 					AND 
 						$interactTB.BP_ID = $corrCoef.BP_ID 
-					AND 
+					 
 						$query) 
 					AS 
 						count_stimulus							
@@ -502,11 +651,28 @@ sub get_data(){
 	
 	$sth->execute()
 	or die "Couldn't execute statement: " . $sth->errstr;
-	
-	# These are all the variables for running this query
-	my ($locus, $cdna, $desc, $length, $corr_ana, $corr_dev, $corr_mut, $corr_stim, $sig_ana, $sig_dev, $sig_mut, $sig_stim);
-	$sth->bind_columns(\$corr_ana, \$corr_dev, \$corr_mut, \$corr_stim, \$sig_ana, \$sig_dev, \$sig_mut, \$sig_stim, \$desc, \$length, \$locus, \$cdna);
-	
+
+
+    my ($bait_id, $locus, $cdna, $desc, $length, $interactions, $corr_ana, $corr_dev, $corr_mut, $corr_stim, $sig_ana, $sig_dev, $sig_mut, $sig_stim);
+
+    # Unless (in other words NOT-IF) view is defined
+    unless($view){	
+        # These are the variables that we need to bind
+        $sth->bind_columns(\$corr_ana, \$corr_dev, \$corr_mut, \$corr_stim, \$sig_ana, \$sig_dev, \$sig_mut, \$sig_stim, \$desc, \$length, \$locus, \$cdna);
+    }
+    # Else if this is a summary for all the baits, bind the variables
+    elsif($view eq "baits"){
+        ###
+        ##TODO
+        ### We need to bind the variables for the different type of attributes 
+        ### for both of the summary pages
+        # In this case, we are using the sig_xxx for the number of significant mutations
+        $sth->bind_columns(\$bait_id, \$locus, \$desc, \$length, \$interactions, \$sig_ana, \$sig_mut, \$sig_dev, \$sig_stim);
+    }
+    
+    
+    
+    
 	# This is the array with all of the proteins
 	my @proteins = ();
 		
@@ -525,6 +691,8 @@ sub get_data(){
 		$temp_hash{sig_dev} = $sig_dev;
 		$temp_hash{sig_mut} = $sig_mut;
 		$temp_hash{sig_stim} = $sig_stim;
+		$temp_hash{interactions} = $interactions;
+		$temp_hash{bait_id} = $bait_id;
 		push @proteins, \%temp_hash;
 	}
 	return \@proteins;

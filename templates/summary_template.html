@@ -8,15 +8,15 @@
 		
         <th >Locus</th>
         
-        <th class="{sorter: false}">Interaction</th>
+        <th class="{sorter: false}">Network(rename?)</th>
 
         <th class="{sorter: false}">Regulatory Information</th>
         
         <th>TAIR Description</th>       
-        
-        <th>cDNA Start</th>
-        
+                
         <th>Length  </th>
+        
+        <th>Inter-actions</th>
         
         <th class="Correlation">Mut.</th>
         <th class="Correlation">Ana.</th>
@@ -52,41 +52,21 @@
             
 			<!-- Protein description-->
 			<td>[% protein.desc %]</td>
-			<!-- -->
-			<td>[% protein.cdna %]</td>
-			<!-- -->
+			<!-- Length -->
 			<td>[% protein.len %]</td>
+			<!-- Interactions -->
+			<td><a href="http://bioinfolab.unl.edu/cgi-bin/gsignal/development/gsignal/find_interactions.cgi?bait_id=[% protein.bait_id %]">
+			    [% protein.interactions %]
+			    </a>
+			</td>
 			<!-- Mutation -->
-		
-			[% USE fp = format('%0.3f') %]
-		<td[% IF protein.sig_mut %] class="significant"[% END %]>
-			[% fp(protein.corr_mut) %]
-		</td>	
-						<!-- Anatomy -->
-		<td[% IF protein.sig_ana %] class="significant"[% END %]>		
-			[% USE fp = format('%0.3f') %]
-		
-			[% fp(protein.corr_ana) %]
-		</td>	
-						<!-- Development -->
-			
-
-			
-			[% USE fp = format('%0.3f') %]
-		<td[% IF protein.sig_dev %] class="significant"[% END %]>
-			[% fp(protein.corr_dev) %]
-		</td>	
-			
-						<!-- Stimulus -->
-			
-
-			
-			[% USE fp = format('%0.3f') %]
-		<td[% IF protein.sig_stim %] class="significant"[% END %]>
-			[% fp(protein.corr_stim) %]
-		</td>
-			
-			
+			<td>[% protein.sig_mut %]</td>
+			<!-- Anatomy -->
+			<td>[% protein.sig_ana %]</td>
+			<!-- Development -->
+			<td>[% protein.sig_dev %]</td>
+			<!-- Stimulus -->
+			<td>[% protein.sig_stim %]</td>	
 	
 		</tr>
 	[% END %]
