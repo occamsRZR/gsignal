@@ -54,7 +54,9 @@ table.tablesorter .headerSortDown {
 	background-repeat: no-repeat;
 }
 
-
+a {
+	font-size: 10px;	
+}
 
 
 
