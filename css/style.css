@@ -1,5 +1,5 @@
 table.tablesorter {
-	font-size: 10px;
+	font-size: 11px;
 	background-color: #4D4D4D;
 	width: 984px;
 	border: 1px solid #000;
@@ -22,7 +22,6 @@ table.tablesorter th.Correlation {
 table.tablesorter td {
 	color: #000;
 	padding: 5px;
-	font-size: 10px;
 }
 
 table.tablesorter td.significant {
@@ -57,7 +56,6 @@ table.tablesorter .headerSortDown {
 
 a:link { /* unvisited link */
 	color:#FF0000;
-	font-size: 10px;
 }      
 a:visited {color:#00FF00;}  /* visited link */
 a:hover {color:#FF00FF;}  /* mouse over link */
