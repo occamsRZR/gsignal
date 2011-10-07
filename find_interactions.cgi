@@ -31,7 +31,8 @@ my $password = "gpa";
 
 # Connection info, connect
 my $connectionInfo = "dbi:mysql:$dbName:$host";
-my $dbh = DBI->connect($connectionInfo, $user, $password) or die "Could not connect to $dbName: " . DBI->errstr;
+my $dbh = DBI->connect($connectionInfo, $user, $password) 
+    or die "Could not connect to $dbName: " . DBI->errstr;
 
 # MySQL table information
 my $baitTB = "bait";
@@ -695,8 +696,7 @@ sub get_data(){
 		$temp_hash{sig_stim} = $sig_stim;
 		$temp_hash{interactions} = $interactions;
 		$temp_hash{bait_id} = $bait_id;
-        $temp_hash{bait_note} = $bait_note;
-				
+        $temp_hash{bait_note} = $bait_note;	
 		push @proteins, \%temp_hash;
 	}
 	return \@proteins;
