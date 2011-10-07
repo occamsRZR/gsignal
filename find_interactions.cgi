@@ -210,6 +210,7 @@ sub build_queries{
                     Short_desc,
                     AA_len,
                     count(*) AS interactions,
+                    bait.Notes,
                     (
                         SELECT
                     		count(*)
@@ -649,11 +650,12 @@ sub get_data(){
 
 	my $sth = $dbh->prepare($sql) or die "Could not prepare statement: " . DBI->errstr;
 	
+	
 	$sth->execute()
 	or die "Couldn't execute statement: " . $sth->errstr;
 
 
-    my ($bait_id, $locus, $cdna, $desc, $length, $interactions, $corr_ana, $corr_dev, $corr_mut, $corr_stim, $sig_ana, $sig_dev, $sig_mut, $sig_stim);
+    my ($bait_id, $bait_note, $locus, $cdna, $desc, $length, $interactions, $corr_ana, $corr_dev, $corr_mut, $corr_stim, $sig_ana, $sig_dev, $sig_mut, $sig_stim);
 
     # Unless (in other words NOT-IF) view is defined
     unless($view){	
@@ -667,7 +669,7 @@ sub get_data(){
         ### We need to bind the variables for the different type of attributes 
         ### for both of the summary pages
         # In this case, we are using the sig_xxx for the number of significant mutations
-        $sth->bind_columns(\$bait_id, \$locus, \$desc, \$length, \$interactions, \$sig_ana, \$sig_mut, \$sig_dev, \$sig_stim);
+        $sth->bind_columns(\$bait_id, \$locus, \$desc, \$length, \$interactions, \$bait_note, \$sig_ana, \$sig_mut, \$sig_dev, \$sig_stim);
     }
     
     
@@ -693,6 +695,8 @@ sub get_data(){
 		$temp_hash{sig_stim} = $sig_stim;
 		$temp_hash{interactions} = $interactions;
 		$temp_hash{bait_id} = $bait_id;
+        $temp_hash{bait_note} = $bait_note;
+				
 		push @proteins, \%temp_hash;
 	}
 	return \@proteins;

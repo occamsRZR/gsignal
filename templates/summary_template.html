@@ -8,7 +8,7 @@
 		
         <th >Locus</th>
         
-        <th class="{sorter: false}">Network(rename?)</th>
+        <th class="{sorter: false}">Network</th>
 
         <th class="{sorter: false}">Regulatory Information</th>
         
@@ -32,10 +32,15 @@
 
 	[% FOREACH protein IN proteins %]
 		<tr>
-			<!-- -->
+			<!-- Protein Locus -->
 			<td>
-			<a target="_blank" href="http://www.arabidopsis.org/servlets/TairObject?name=[% protein.locus %]&type=locus">
-			[% protein.locus %]</td>
+			    <a target="_blank" href="http://www.arabidopsis.org/servlets/TairObject?name=[% protein.locus %]&type=locus">
+			    [% protein.locus %]
+			    [% IF protein.bait_note %]
+			    [[% protein.bait_note %]]
+			    [% END %]
+			    
+			</td>
 			
 			
 			<!-- Here are all the interaction links -->
