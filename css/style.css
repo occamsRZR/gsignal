@@ -1,5 +1,5 @@
 table.tablesorter {
-	font-size: 12px;
+	font-size: 11px;
 	background-color: #4D4D4D;
 	width: 984px;
 	border: 1px solid #000;
@@ -53,7 +53,19 @@ table.tablesorter .headerSortDown {
 	background-repeat: no-repeat;
 }
 
+a {
+	text-decoration: none;	
+}
 
+
+a:link { /* unvisited link */
+	color:#4183C4;
+}      
+a:visited {color:#543497;}  /* visited link */
+a:hover {
+	text-decoration: underline;
+}  /* mouse over link */
+a:active {color:#0000FF;}  /* selected link */
 
 
 
@@ -257,17 +269,6 @@ color:#AEF080;
 
 .content-padding {
   padding: 0px 20px 0px 20px;
-}
-
-.content-padding a {
-  font:13.5px Arial, "Times New Roman", Times;
-  color:#002224;
-}
-
-.content-padding a:hover {
-  font:13.5x Arial, "Times New Roman", Times;
-  color:inherit;
-  text-decoration:none;
 }
 
 
