@@ -70,6 +70,9 @@ a:active {color:#0000FF;}  /* selected link */
 
 
 /* Protein Info pane and sidebar */
+#main{
+    background-color: #e4f7c7;	
+}
 
 table.info {
     width: 100%;
