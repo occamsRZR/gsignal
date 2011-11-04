@@ -58,7 +58,7 @@ table.tablesorter .headerSortDown {
 
 
 /* Protein Info pane and sidebar */
-main{
+#main{
 	width: 100%;	
 	background-color: #e4f7c7;
 }
