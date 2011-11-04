@@ -58,6 +58,10 @@ table.tablesorter .headerSortDown {
 
 
 /* Protein Info pane and sidebar */
+main{
+	width: 100%;	
+}
+
 
 table.info {
     width: 100%;
