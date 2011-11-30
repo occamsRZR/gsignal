@@ -60,7 +60,11 @@
 			<!-- Length -->
 			<td>[% protein.len %]</td>
 			<!-- Interactions -->
-			<td><a href="http://bioinfolab.unl.edu/cgi-bin/gsignal/development/gsignal/find_interactions.cgi?bait_id=[% protein.bait_id %]">
+			<td><a href="http://bioinfolab.unl.edu/cgi-bin/gsignal/development/gsignal/find_interactions.cgi?
+			[% IF view == 'preys'%]plocus=[% protein.locus %]
+			[% ELSIF view == 'baits' %]bait_id=[% protein.bait_id %]
+			[% END %]
+			">
 			    [% protein.interactions %]
 			    </a>
 			</td>

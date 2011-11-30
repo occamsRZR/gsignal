@@ -1,26 +1,25 @@
 </br>
-<table class="info" summary="Protein information">
-	<tr>
-		<td class="cytoscape round">
-			<div id="cytoscapeweb" style="width:600px;height:400px;"></div>
-				
-		</td>
-		
-		<td class="general">
 
-			<img id="#visBrowserLogo" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/logo-tair2.gif" alt="N_logo" width="25" height="18" align="bottom">Launch N-Browse w/ TAIR interactome. </br>
-			<img src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/n_logo.gif" alt="N_logo" width="14" height="18" align="bottom">Launch N-Browse w/ G-signaling interactome.
-		</td>
-		                
+<div id="main" class="round">
+<a href="#"><img id="arrow" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/left_arrow.png" width="13"></a> Protein info and Interaction
+<table id="info" summary="Protein information" style="display:none">
+    <tr>
+
+
+        
+        <td id="cytoscapeweb" style="width:750px;height:750px;" class="cytoscape round">
+
+        </td>             
         <td class="sidebar round"> 
-			<strong><u>Protein Info</u></strong></br>
-			<strong>Name:</strong> [% info(id).name %]</br>
-			<strong>Locus:</strong> [% info(id).locus %]</br>
-			<strong>Number of Interactions:</strong> [% info(id).int %]</br>
-			<strong>Length:</strong> [% info(id).aa %]aa</br>
-			<strong>Description:</strong> [% info(id).desc %]</br></br>
-			
-	   
+            <strong><u>Protein Info</u></strong></br>
+            <strong>Name:</strong> [% info(id).name %]</br>
+            <strong class="locus">Locus: </strong>
+                <locus>[% info(id).locus %]</locus></br>
+            <strong>Number of Interactions:</strong> [% info(id).int %]</br>
+            <strong>Length:</strong> [% info(id).aa %]aa</br>
+            <strong>Description:</strong> [% info(id).desc %]</br></br>
+            
+       
             Cuttoff values and significant interactions:</br>
      
             <table class="cutoffs" summary="All the cutoff values">
@@ -43,10 +42,20 @@
                     <td class="cutoffs">[% info(id).count_dev %]</td>
                     <td class="cutoffs">[% info(id).count_stim %]</td>
                 </tr>
-                
+                <tr>
+                    <td class="general">
+                        <img id="#visBrowserLogo" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/logo-tair2.gif" alt="N_logo" width="25" height="18" align="bottom">Launch N-Browse w/ TAIR interactome. </br>
+                    </td>
+                    <td>
+                        <img src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/n_logo.gif" alt="N_logo" width="14" height="18" align="bottom">Launch N-Browse w/ G-signaling interactome.
+                    </td>
+                </tr>
                 
             </table>
         </td>
-			
-	</tr>
+
+    </tr>                  
+    <!-- This is the svg Canvas (phylogenetic tree) -->    
+
+    <!--                <div id="svgCanvas"> </div> -->
 </table>

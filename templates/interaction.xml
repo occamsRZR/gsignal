@@ -1,0 +1,21 @@
+<graphml>
+    <key id="type" for="edge" attr.name="type" attr.type="string"/>
+    <key id="label" for="all" attr.name="label" attr.type="string"/>
+    <key id="weight" for="node" attr.name="weight" attr.type="double"/>
+    <graph>
+        [% FOREACH node IN nodes %]
+            <node id="[% node %]">
+                <data key="label">  
+                    [% node %]
+                </data>
+            </node>
+        [% END %]
+        [% FOREACH edge IN edges %]
+            <edge source="[% edge.node_from %]" target="[% edge.node_to %]">
+                <data key="type">
+                    [% edge.data_type %]
+                </data>
+            </edge>
+        [% END %]
+    </graph>
+</graphml>

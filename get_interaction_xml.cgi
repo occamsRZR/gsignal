@@ -1,15 +1,23 @@
-#!/usr/bin/perl -T
+#!/usr/bin/perl
+
+BEGIN{
+    unshift @INC, "./modules/lib64/perl5/site_perl/5.8.8/x86_64-linux-thread-multi";
+}
+
+print "Content-Type: text/xml\n\n";
+
 
 use strict;
 use warnings;
 use CGI;
 use DBI;
 use Data::Dumper;
+use Template;
 
 my $query = new CGI;
 my $locus = $query->param('locus');
 
-
+#$locus = "AT1G01040";
 #####
 ## Here's all the MySQL initialization
 #####
@@ -30,8 +38,8 @@ my $dbh = DBI->connect($connectionInfo, $user, $password)
 ####
 
 
-
-
+my ($hash_ref, $nodes) = get_data();
+print_xml($hash_ref);
 
 
 
@@ -51,42 +59,94 @@ my $dbh = DBI->connect($connectionInfo, $user, $password)
 ##################################################
 sub get_data{
     
+
+    
     #######
     ###TODO
     #######
     ### Reduce this query so we can also get correlation coefficients
     my $sql = "
         SELECT
-            Node_from,
-            Node_to,
-            Data_Type,
-            PubMed
+	        Bait_locus,
+            Prey_locus,
+            BP_ID
         FROM
-            tair_nbrowseMay2010
-    
+            bait,
+            interact
+        WHERE
+            bait.Bait_ID = interact.Bait_ID AND
+            (bait.Bait_locus = '$locus') OR ( interact.Prey_locus = '$locus')
+        GROUP BY
+            Prey_locus
+        ;
             ";
     
-    
-    
-    
-
     # Prepare and execute SQL statement
     my $sth = $dbh->prepare($sql) or die "Could not prepare statement: " . DBI->errstr;
 	$sth->execute()
 	    or die "Couldn't execute statement: " . $sth->errstr;
 
     # create variables and bind to columns
-    my ($node_from, $node_to, $data_type, $pubMed);
-    $sth->bind_columns(\$node_from, \$node_to, \$data_type, \$pubMed);
+    my ($bp_id, $bait_locus, $prey_locus);
+    $sth->bind_columns(\$bait_locus, \$prey_locus, \$bp_id);
+
+    # Make all of the hashes, including the node hash
+    my %protein_hash;
+    my %node_hash;
+    my @edges;
     
     while($sth->fetch()){
-        my %temp_hash = ();
+        my %temp_hash;
         
+        $temp_hash{node_from} = $bait_locus;
+        $temp_hash{node_to} = $prey_locus;
+        $protein_hash{$bp_id} = \%temp_hash;
+        push @edges, \%temp_hash;
+        $node_hash{$bait_locus} = 1;
+        $node_hash{$prey_locus} = 1;
 
-        $temp_hash{} = ;
-        $temp_hash{} = ;
-        $temp_hash{} = ;
-        $temp_hash{} = ;
-        
-    }    
+    }   
+    
+    my @nodes;
+    
+    # For each of the nodes in the hash add it to the array
+    foreach my $node(keys %node_hash){
+        push @nodes, $node;
+    }
+    
+    
+    
+    return \%protein_hash, \@nodes, \@edges;
+}
+
+
+##################################################
+# print_xml
+#
+# DESCRIPTION: print the xml using the hash ref that was given
+#
+# IN
+#       $interactions       : all of the interactions for this locus
+#
+# OUT
+#       Nothing will be returned, all will be printed - John 3:42
+#
+##################################################
+sub print_xml{
+    my ($interactions, $nodes, $edges) = get_data();
+    
+    #Define all of the Template stuff
+    my $interaction_xml = 'templates/interaction.xml';
+    my $template = Template->new();
+    
+    my $data = {
+                'interactions'  => $interactions,
+                'nodes'         => $nodes,
+                'edges'         => $edges
+                };
+    
+    
+    $template->process($interaction_xml, $data);
+
+
 }

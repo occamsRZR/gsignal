@@ -92,12 +92,15 @@ sub process{
 
     my $vars = {
 	    'proteins' => $proteins,
-	    'info'     => $info
+	    'info'     => $info,
+	    'view'     => $view,
+	    'bid'      => $bid,
+	    'p_locus'  => $p_locus
     };
     
     my $template = Template->new();
 
-    $template->process($header) 			
+    $template->process($header, $vars) 			
         or die "Template process failed!\n", $template->error(), "\n";
     
 
@@ -298,6 +301,89 @@ sub build_queries{
 		# If we want to view all of the interactions by each prey locus
 		elsif($view eq "preys"){
 			### TODO
+			$data_sql = "
+			    SELECT
+                    interact.Prey_locus as p_locus,
+                    tair9.Short_desc,
+                    tair9.AA_len,
+                    count(*) as interactions,
+                    (
+                        SELECT
+                            count(*)
+                        FROM
+                            correlation,
+                            interact
+                        WHERE
+                            Sig_anatomy=1
+                        AND
+                            interact.BP_ID = correlation.BP_ID
+                        AND
+                            interact.Prey_locus = p_locus
+                        )
+                        AS
+                            count_anatomy,	
+                    (
+                        SELECT
+                            count(*)
+                        FROM
+                            correlation,
+                            interact
+                        WHERE
+                            Sig_mutation=1
+                        AND
+                            interact.BP_ID = correlation.BP_ID
+                        AND
+                            interact.Prey_locus = p_locus
+                        )
+                        AS
+                            count_mutation,
+                    (
+                        SELECT
+                            count(*)
+                        FROM
+                            correlation,
+                            interact
+                        WHERE
+                            Sig_development=1
+                        AND
+                            interact.BP_ID = correlation.BP_ID
+                        AND
+                            interact.Prey_locus = p_locus
+                        )
+                        AS
+                            count_development,
+                    (
+                        SELECT
+                            count(*)
+                        FROM
+                            correlation,
+                            interact
+                        WHERE
+                            Sig_stimulus=1
+                        AND
+                            interact.BP_ID = correlation.BP_ID
+                        AND
+                            interact.Prey_locus = p_locus
+                        )
+                        AS
+                            count_stimulus
+                FROM
+                    interact,
+                    tair9
+                WHERE
+                    tair9.Locus = interact.Prey_locus
+                GROUP BY
+                    Prey_Locus;
+			";
+			
+            $info_sql = "
+                SELECT
+                    count(*)
+                FROM
+                    interact;
+            
+            ";
+			
 		
 		}
 		# If we want to view all of the interactions as a summary (ALL interactions are displayed)
@@ -493,8 +579,7 @@ sub get_info(){
     unless($view){    
         $sth->bind_columns(\$interactions, \$desc, \$aa_length, \$locus, \$name);
     }
-
-    elsif($view eq "baits"){
+    else{
         $sth->bind_columns(\$interactions);
     }
     
@@ -665,12 +750,17 @@ sub get_data(){
     }
     # Else if this is a summary for all the baits, bind the variables
     elsif($view eq "baits"){
+
+        $sth->bind_columns(\$bait_id, \$locus, \$desc, \$length, \$interactions, \$bait_note, \$sig_ana, \$sig_mut, \$sig_dev, \$sig_stim);
+    }
+    # Else if this is a summary for all the preys, bind the variables
+    elsif($view eq "preys"){
         ###
         ##TODO
         ### We need to bind the variables for the different type of attributes 
         ### for both of the summary pages
         # In this case, we are using the sig_xxx for the number of significant mutations
-        $sth->bind_columns(\$bait_id, \$locus, \$desc, \$length, \$interactions, \$bait_note, \$sig_ana, \$sig_mut, \$sig_dev, \$sig_stim);
+        $sth->bind_columns(\$locus, \$desc, \$length, \$interactions, \$sig_ana, \$sig_mut, \$sig_dev, \$sig_stim);
     }
     
     

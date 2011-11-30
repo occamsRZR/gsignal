@@ -19,44 +19,43 @@
 	<script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/js/jquery.tablesorter.js"></script> 
 	<script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/js/jquery.tablesorter.pager.js"></script> 
 	
-    <!-- Cytoscape Web -->
-    <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/cytoscape_web/js/min/AC_OETags.min.js"></script>
-    <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/cytoscape_web/js/min/json2.min.js"></script>
-    <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/cytoscape_web/js/min/cytoscapeweb.min.js"></script>
 
-
+    
+    <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/js/get.url.vals.js"></script>
+	
 	<script type="text/javascript"> 
 
 	
 	$(document).ready(function(){
-		$("Mutation").hide();
-		$("Development").hide();
-		$("Anatomy").hide();
-		$("Stimulus").hide();
-	
 		$("#dataTable")
-			.tablesorter({widthFixed: true, widgets: ['zebra']}); 
+			.tablesorter({widthFixed: true, widgets: ['zebra']
+    }); 
  
  
     $('.correlation').change(function () {
-	    $("Mutation").hide();
-	    $("Development").hide();
-	    $("Anatomy").hide();
-        $("Stimulus").hide();
- 
- 
 	    $(this.value).show();
 			})
 			.trigger('change');
-	    });
+	});
 		
 		
 		
 		
 	</script> 
-
-    <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/js/interactome.viewer.js"></script>
-
+	
+	[% IF (bid || p_locus) %]
+        <!-- Cytoscape Web -->
+        <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/cytoscape_web/js/min/AC_OETags.min.js"></script>
+        <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/cytoscape_web/js/min/json2.min.js"></script>
+        <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/cytoscape_web/js/min/cytoscapeweb.min.js"></script>
+        <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/js/interactome.viewer.js"></script>
+        
+        <!-- jsPhyloSVG -->
+        <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/js/raphael-min.js" ></script>
+        <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/js/jsphylosvg-min.js"></script> 
+        <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/js/jsphylo.viewer.js"></script>
+    [% END %]
+    
 	</head>
 	
 	
@@ -65,7 +64,7 @@
 	  <div id="header"> 
 	    <div id="logo"> 
 	    <!-- begin logo --> 
-		<p>Arabidopsis</p> 
+		<p><i>Arabidopsis</i></p> 
 		<div id="slogan"><p>G-Signaling Interactome Database</p></div> 
 		<!-- end logo --> 
 		</div> 
@@ -75,8 +74,20 @@
 		  <!-- start of navigation --> 
 		    <ul> 
 			  <li class="nav-menuList"><a href="http://bioinfolab.unl.edu/emlab/Gsignal/index.pl">Home</a></li> 
-			  <li class="active"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=BAIT">Baits</a></li> 
-			  <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=PREY">Preys</a></li> 
+			  <li class=
+			    [% IF (view == 'baits' || bid )%]
+			        "active"
+			    [% ELSE %]
+			        "nav-menuList"
+			    [% END %]
+			    ><a href="/cgi-bin/gsignal/development/gsignal/find_interactions.cgi?view=baits">Baits</a></li> 
+			  <li class=
+                [% IF (view == 'preys' || p_locus )%]
+			        "active"
+			    [% ELSE %]
+			        "nav-menuList"
+			    [% END %]
+			    ><a href="/cgi-bin/gsignal/development/gsignal/find_interactions.cgi?view=preys">Preys</a></li> 
 			  <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=NONE">Search DB</a></li> 
               <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=HELP">Help</a></li> 
               <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=LINKS">Links</a></li> 
