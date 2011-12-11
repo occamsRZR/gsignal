@@ -5,12 +5,12 @@ table.treeResults {
 
 table.treeResults th {
 	border: 1px solid #000;
-	height: 20px;
+	height: 30px;
 }
 
 table.treeResults tr {
 	border: 1px solid #000;
-	height: 20px;
+	height: 30px;
 }
 
 table.treeResults td {
