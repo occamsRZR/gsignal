@@ -5,13 +5,13 @@ table.treeResults {
 
 table.treeResults th {
 	border: 1px solid #000;
-	height: 28px;
+	height: 26px;
 	width : 40px;
 }
 
 table.treeResults tr {
 	border: 1px solid #000;
-	height: 26px;
+	height: 28px;
 }
 
 table.treeResults td {
