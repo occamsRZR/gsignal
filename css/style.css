@@ -16,6 +16,7 @@ table.treeResults tr {
 
 table.treeResults td {
 	border: 1px solid #000;
+	text-align: center;
 }
 
 table.tablesorter {
