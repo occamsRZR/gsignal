@@ -121,6 +121,10 @@ td.sidebar {
     font-size:12px;
     margin-bottom: 2;
 }
+td.sidebar.all {
+    font_size:14px;	
+}
+	
 table.cutoffs {
 
     font-size: 11px;
