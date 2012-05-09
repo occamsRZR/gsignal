@@ -133,6 +133,9 @@ td.cutoffs {
     width: 50px;
     text-align: center;
 }
+h4 {
+	text-align: center;
+}
 
 
 /* Round corners */
