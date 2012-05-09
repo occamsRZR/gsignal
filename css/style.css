@@ -112,6 +112,9 @@ td.main {
 td.general {
 	font-size: 11px;
 }
+general.h4 {
+	font-size: 36;
+}
 
 td.sidebar {
     width: 210px;
