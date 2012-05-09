@@ -19,6 +19,10 @@ my $bid = $query->param('bait_id');
 my $p_locus = $query->param('plocus');
 my $nr = $query->param('nr');
 my $sig = $query->param('sig');
+my $q = $query->param('q');
+my $search = $query->param('search');
+my $download = $query->param('download');
+
 
 #####
 ## Here's all the MySQL initialization
@@ -76,8 +80,15 @@ process();
 #       Nothing is returned, just processed and displayed
 ##################################################	
 sub process{
-    # We need to build the SQLs 
-    my ($info_sql, $data_sql) = build_queries();
+    my ($info_sql, $data_sql, $proteins, $info);
+
+    
+    unless(($view eq 'help') || ($view eq 'tree') || ($view eq 'links') || ($view eq 'search') || ($q)){
+        # We need to build the SQLs 
+       ($info_sql, $data_sql) = build_queries();
+        $proteins = get_data($data_sql);
+        $info = get_info($info_sql);
+    }
     
     # Define all of the templates we are going to be using
     my $header = 'templates/header_template.html';
@@ -86,18 +97,20 @@ sub process{
     my $summary_table = 'templates/summary_template.html';
     my $protein_info = 'templates/protein_info_template.html';
     my $summary_info = 'templates/summary_info_template.html';
-    
-    my $proteins = get_data($data_sql);
-    my $info = get_info($info_sql);
+    my $tree        =  'templates/tree_template.html';
+    my $help        =  'templates/help_template.html';
+    my $links       =  'templates/links_template.html';   
+    my $search_tmp  =  'templates/search_template.html';
+    my $results_tmp =  'templates/results_template.html';
 
     my $vars = {
 	    'proteins' => $proteins,
 	    'info'     => $info,
 	    'view'     => $view,
 	    'bid'      => $bid,
-	    'p_locus'  => $p_locus
+	    'p_locus'  => $p_locus,
+	    'query'         => $q
     };
-    
     my $template = Template->new();
 
     $template->process($header, $vars) 			
@@ -107,12 +120,52 @@ sub process{
     
     # If view is defined, process the summary table
     if($view){
-        # This is the info pane at the top for the summary pages
-        $template->process($summary_info, $vars) 
-            or die "Template process failed!\n", $template->error(), "\n";
-        # This is the summary table    
-        $template->process($summary_table, $vars) 
-            or die "Template process failed!\n", $template->error(), "\n";
+
+        # If this is a tree
+        if($view eq 'tree'){
+            # This is the info pane at the top for the summary pages
+            $template->process($tree, $vars) 
+                or die "Template process failed!\n", $template->error(), "\n";
+        }
+        # Else this must be a baits or preys page
+        elsif(($view eq 'baits') || ($view eq 'preys')){
+            # This is the info pane at the top for the summary pages
+            $template->process($summary_info, $vars) 
+                or die "Template process failed!\n", $template->error(), "\n";
+            # This is the summary table    
+            $template->process($summary_table, $vars) 
+                or die "Template process failed!\n", $template->error(), "\n";
+        }
+        # Else if this is a help page
+        elsif($view eq "help"){
+            $template->process($help, $vars) 
+                or die "Template process failed!\n", $template->error(), "\n";            
+        }
+        # Else if this is a links page
+        elsif($view eq "links"){
+            $template->process($links, $vars) 
+                or die "Template process failed!\n", $template->error(), "\n";     
+        }
+        # Else if this is a links page
+        elsif($view eq "search"){
+            $template->process($search_tmp, $vars) 
+                or die "Template process failed!\n", $template->error(), "\n";     
+        }
+    }
+    elsif($q){
+        my @queries = parse_search_query($q);
+        my @sql_queries = build_search_queries(@queries);
+        my $results = get_search_data(\@sql_queries, \@queries);
+        
+        $vars = {
+            'queries'   => \@queries,
+            'results'   => $results
+        };
+        $template->process($results_tmp, $vars) 
+            or die "Template process failed!\n", $template->error(), "\n";  
+    }
+    elsif($download){
+        
     }
     else{
         # This is the info pane at the top for the protein pages
@@ -146,7 +199,8 @@ sub process{
 #		
 #
 # OUT
-#       %proteins		  :   a hash with all the protein info
+#       $info_sql         :   our info sql
+#       $data_sql		  :   our data sql
 ##################################################
 sub build_queries{
 	
@@ -549,7 +603,90 @@ sub build_queries{
 	return ($info_sql, $data_sql);
 }
 
+##################################################
+# build_search_queries
+#
+# DESCRIPTION: build the search queries
+#             using the bait_id/prey_locus/keyword
+#			 provided
+#
+# IN
+#       @queries          :   an array parsed by
+#                               parse_search_queries
+#		                        
+# OUT
+#       @sql_queries	  :   an array with all of the queries
+##################################################
+sub build_search_queries{
+    my @queries = @_;
+    my @sql_queries;
+    # For each of the queries, make an sql statement
+    # put those statements in the sql_queries array
+    foreach my $temp_q(@queries){
+        my $sql = "
+            SELECT
+                bait.Bait_ID,
+                bait.Bait_locus,
+                bait.Bait_name,
+                bait.Notes,
+                interact.BP_ID,
+                interact.Prey_locus,
+                tair9.Short_desc,
+                correlation.Corr_coeff_anatomy,
+                correlation.Corr_coeff_development,
+                correlation.Corr_coeff_mutation,
+                correlation.Corr_coeff_stimulus,
+                correlation.Sig_anatomy,
+                correlation.Sig_development,
+                correlation.Sig_mutation,
+                correlation.Sig_stimulus
+                
+            FROM
+                bait,
+                interact,
+                tair9,
+                correlation
+            WHERE
+                interact.Bait_ID = bait.Bait_ID AND
+                interact.Prey_locus = tair9.Locus AND
+                interact.BP_ID = correlation.BP_ID AND
+                (Bait_locus LIKE '%$temp_q%' OR
+                Bait_name  LIKE '%$temp_q%' OR
+                interact.Prey_locus LIKE '%$temp_q%')
+            GROUP BY
+                BP_ID;";
+        push(@sql_queries, $sql);
+    }
+    return @sql_queries;
+}
 
+
+##################################################
+# parse_search_query
+#
+# DESCRIPTION:  parse the search query  
+#
+# IN
+#       $q			    :   our search query obtained by CGI
+#		
+#
+# OUT
+#       @queries		:   an array of each query
+##################################################
+sub parse_search_query{
+    my $query = shift;
+    # Our query is delimited by newlines
+    my @temp_queries = split(/\n/, $query);
+    my @queries;
+    # We now need to check to make sure there is something worthwhile in each query
+    foreach my $temp(@temp_queries){
+        if($temp =~ /[A-Za-z0-9-]+/){
+            $temp =~ s/\s+$//;
+            push(@queries, $temp);
+        }
+    }
+    return @queries;
+}
 	
 ##################################################
 # get_info
@@ -790,5 +927,95 @@ sub get_data(){
 		push @proteins, \%temp_hash;
 	}
 	return \@proteins;
+
+}
+
+
+##################################################
+# get_search_data
+#
+# DESCRIPTION: get an array of hashes by using the 
+#             bait_id/prey_id/keyword of query
+#
+# IN
+#       @sql_queries      :   an array of all the sql statements
+#
+# OUT
+#       @results		  :   an array of all the results from the query
+##################################################
+sub get_search_data(){
+    my ($sql_queries_ref, $queries_ref) = @_;
+    my @sql_queries = @$sql_queries_ref;
+    my @queries     = @$queries_ref;
+    
+    my ($bait_id, $bait_locus, $bait_name, $bait_notes, $bp_id, $prey_locus, $short_desc,    $corr_ana, $corr_dev, $corr_mut, $corr_stim, $sig_ana, $sig_dev, $sig_mut, $sig_stim);
+    my %results;
+    my $i = 0;
+    # For each of the sql statements, get data
+    foreach my $sql(@sql_queries){
+        # prepare and execute statement
+        my $sth = $dbh->prepare($sql) 
+            or die "Could not prepare statement: " . DBI->errstr;
+	    $sth->execute()
+	        or die "Couldn't execute statement: " . $sth->errstr;
+	    $sth->bind_columns(\$bait_id, \$bait_locus, \$bait_name, \$bait_notes, \$bp_id,	    \$prey_locus, \$short_desc, \$corr_ana, \$corr_dev, \$corr_mut, \$corr_stim, \$sig_ana, \$sig_mut, \$sig_dev, \$sig_stim);
+        
+        my @temp_results;
+        # Fetch the results from this query
+    	while($sth->fetch()){
+    	    my %temp_hash = ();
+    	    # Put all the vars in the hash
+    	    $temp_hash{bait_locus} = $bait_locus;
+    	    $temp_hash{bait_id} = $bait_id;
+    	    $temp_hash{bait_name} = $bait_name;
+    	    $temp_hash{bait_notes} = $bait_notes;
+    	    $temp_hash{bp_id} = $bp_id;
+    	    $temp_hash{prey_locus} = $prey_locus;
+    	    $temp_hash{short_desc} = $short_desc;
+    	    $temp_hash{corr_ana} = $corr_ana;
+    	    $temp_hash{corr_dev} = $corr_dev;
+    	    $temp_hash{corr_mut} = $corr_mut;
+    	    $temp_hash{corr_stim} = $corr_stim;
+            $temp_hash{sig_ana} = $sig_ana;
+            $temp_hash{sig_dev} = $sig_dev;
+            $temp_hash{sig_mut} = $sig_mut;
+            $temp_hash{sig_stim} = $sig_stim;
+    	    # push this temp has into our temp array
+    	    push @temp_results, \%temp_hash;
+    	}
+    	$results{$queries[$i]} = \@temp_results;
+    	$i++;
+    }
+    return \%results;
+}
+
+
+
+##################################################
+# download_data
+#
+# DESCRIPTION:  download the data from the website
+#           in a TAB-delimited format
+#
+# IN
+#       $page       :   the page of data we want to download
+#
+# OUT
+#       $file_name  :   the filename of the file we want to download
+##################################################
+sub download_data{  
+    
+    # clean up the directory first (remove one day or older files
+    system("find ./tmp/file*.txt -mtime +1 -delete;");
+
+    my $job = $$; # the process id is used as the job ID
+    my $file = "file$job.txt";
+    my $file1 = "./tmp/$file";
+    my $file3 = "/emlab/Gsignal/cgi/tmp/$file";
+    
+    my $buffer;
+    $ENV{'REQUEST_METHOD'} =~ tr/a-z/A-Z/;
+    
+    read(STDIN, $buffer, $ENV{'CONTENT_LENGTH'});
 
 }

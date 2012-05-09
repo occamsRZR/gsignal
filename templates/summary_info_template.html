@@ -1,4 +1,11 @@
 </br>
+<h1 style="text-align:center; font-size:35;">
+[% IF view == 'baits' %]
+Bait summary - 24 proteins
+[% ELSIF view == 'preys' %]
+Prey summary - 431 proteins
+[% END %]
+</h1>
 <table class="info" summary="Protein information">
 	<tr>
 		<td class="main round">
@@ -8,8 +15,11 @@
 		
 		<td class="general">
 
-			<img id="#visBrowserLogo" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/logo-tair2.gif" alt="N_logo" width="25" height="18" align="bottom">Launch N-Browse w/ TAIR interactome. </br>
-			<img src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/n_logo.gif" alt="N_logo" width="14" height="18" align="bottom">Launch N-Browse w/ G-signaling interactome.
+			<img id="#visBrowserLogo" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/logo-tair2.gif" alt="N_logo" width="25" height="18" align="bottom">
+			Launch N-Browse w/ TAIR interactome. 
+			</br>
+			<img src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/n_logo.gif" alt="N_logo" width="14" height="18" align="bottom">
+			Launch N-Browse w/ G-signaling interactome.
 		</td>
 		                
         <td class="sidebar round"> 

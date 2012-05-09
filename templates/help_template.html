@@ -1,0 +1,365 @@
+<table id="overallTable" width="100%">
+<tr><td><table class="topTable">
+<tr><td align="center"><br>
+<table class="help">
+<tr><td>
+	<div id="help">
+	
+ 	<a name="top"></a>
+	<p class="helpLink"><b>Jump to:</b> &nbsp;
+	<a href="#about"><b>About</b></a> &nbsp;&nbsp;&mdash;&nbsp;&nbsp; 
+	<a href="#site"><b>Site info</b></a> &nbsp;&nbsp;&mdash;&nbsp;&nbsp; 
+	<a href="#library"><b>Library</b></a> &nbsp;&nbsp;&mdash;&nbsp;&nbsp; 
+	<a href="#data"><b>Data</b></a> &nbsp;&nbsp;&mdash;&nbsp;&nbsp; 
+	<a href="#nbrowse"><b>N-Browse</b></a> &nbsp;&nbsp;&mdash;&nbsp;&nbsp; 
+	<a href="#team"><b>Team</b></a>
+	</p>
+	<br><br>
+ 	
+	<a class="small" href="#top">[Jump to the top]</a>
+ 	<a name="about"></a>
+ 	<h2>About <i>Arabidopsis</i> G-Signaling Interactome Database:</h2>
+
+	<p class="help">This database includes information on <i>Arabidopsis</i> proteins identified to interact with 
+	the heterotrimeric G-protein complex. Three proteins (RGS, GPA1, and ARD1) and two dimers 
+	(AGB1/AGG1 and AGB1/AGG2) were chosen as the first set of baits (core baits). After the 
+	preliminary screening, 22 proteins were chosen as the second set of baits. 
+	Using a high-throughput interaction screening with 22 baits against 9 cDNA libraries, 
+	a total of 396 prey proteins with 903 interactions were identified. See below for 
+	information about the cDNA libraries used. See 
+	<a target="_brank" href="http://www.bio.unc.edu/faculty/jones/Lab/2010Project2/" >
+	the project website</a> for more details on the data collection experiments.</p>
+	
+	<p class="help">Information on these baits, preys, interactions, and libraries are stored in our 
+	G-signaling MySQL database. The graphic user interface allows users to search through 
+	our database and gather information of interests using Web browsers. Protein information 
+	for baits and preys is gathered from 
+	<a target="_brank" href="http://www.arabidopsis.org/">TAIR (The <i>Arabidopsis</i> Information Resource)</a> 
+	and stored also locally in our database. Interactions are visualized using N-Browse.</p> 
+	<br>
+	
+ 	<a name="site"></a>
+	<a class="small" href="#top">[Jump to the top]</a>
+	<h2>Site Information:</h2>
+
+	<ul>
+		<li class="none"><a href="http://bioinfolab.unl.edu/emlab/Gsignal/index.pl"><b>Home</b></a>
+			<ul>
+				<li class="none">Shows the current statistics of bait, prey, and interaction data in our database. 
+				Each number is linked to a specific page. Or use the tabs at the top of the page to 
+				navigate through the website.
+				</li>
+			</ul>
+		</li>
+		<li class="none"><a href="./gsignal.cgi?list=BAIT"><b>Baits</b></a>
+			<ul>
+				<li class="none">Lists bait proteins used for the interaction analysis. The bait table serves 
+				as a portal for information about preys and interactions.
+					<ul>
+						<li><b>Show Interaction Summary by Bait</b> button brings up the 
+						<b>Interaction Summary</b> page. See below for the description for this page.
+						</li>
+						<li><b>Bait Locus</b> is linked to its entry in TAIR database for more information.
+						</li>
+						<li>The button in the <b>Interaction</b> column shows the number of interactions for each bait.
+						See the description below <b>Bait Specific Interaction Summary page</b>.
+						</li>
+						<li>Interactions from the bait can be visualized using N-Browse by clicking on either <b>TAIR</b> or <b>N icon</b> button. 
+						A preview of the network image can be seen by rolling over the icons. 
+						<b>TAIR icon</b> launches N-Browse Java Applet from TAIR with TAIR interactome database. 
+						<b>N icon</b> launches N-Browse Java Applet from our server with our G-signaling interactome database. 
+						</li>
+						<li><b>AtPID</b> link brings up the Bait locus information from 
+						<a target="_brank" href="http://www.megabionet.org/atpid/webfile/">AtPID (<i>Arabidopsis thaliana</i> Protein Interactome Databse).</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li class="none"><b>Interaction Summary page</b>
+			<ul>
+				<li class="none">Shows a summary view of all interactions and preys for each bait.
+					<ul>
+						<li>Use the <b>Choose a bait</b> pull-down menu to choose a bait. 
+					    Choose between <b>Bait/Prey/Library</b> or <b>Bait/Prey</b> combination for the interaction 
+						summary view. The <b>Bait/Prey/Library</b> option aggregates different cDNA positions for 
+						a given prey/library combination. The <b>Bait/Prey</b> option aggregates different libraries 
+						and cDNA positions for a given prey. After choosing the options, click on the 
+						<b>Update Summary</b> button. The summed-up number of interactions for each combination 
+						is shown in the last column.
+						</li>
+						<li><b>Bait Locus</b> and <b>Prey Locus</b> are linked to its entry in TAIR database for more information.
+						</li>
+						<li>Mouse over a library name to see the description of the library.
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li class="none"><b>Bait Specific Interaction Summary page</b>
+			<ul>
+				<li class="none">Lists all interactions with preys for a given bait protein. 
+				The bait name and TAIR locus are listed at the top along with the number of 
+				interactions. Use the buttons above the table to change the view.
+					<ul>
+						<li><b>Sort</b> button changes the table listing order.
+						</li>
+						<li><b>Show non-redundant prey protein list</b> button shows the non-redundant 
+						list of preys regardless of the libraries and cDNA positions.
+						</li>
+						<li><b>Show all prey protein list</b> button lists all interactions including all 
+						combinations of preys, libraries, and cDNA positions. This is the view shown at first. 
+						The button toggles with <b>Show non-redundant prey protein list</b> button.
+						</li>
+						<li><b>Prey Locus</b> is linked to its entry in TAIR database for more information.
+						</li>
+						<li>Use <b>TAIR icon</b> button to visualize TAIR interactome information for the given prey protein.
+						It launches N-Browse Java Applet from TAIR. 
+						</li>
+						<li>Use <b>N icon</b> button to visualize our G-signaling interactome information for the given prey protein.
+						It launches N-Browse Java Applet on our server. 
+						</li>
+						<li><b>AtPID</b> link brings up the prey locus information from AtPID.
+						</li>
+						<li>Mouse over a library name to see the description of the library.
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li class="none"><a href="./gsignal.cgi?list=PREY"><b>Preys</b></a>
+			<ul>
+				<li class="none">Lists all prey proteins found to interact with one or more of the baits. 
+					<ul>
+						<li><b>Prey Locus</b> is linked to its entry in TAIR database for more information.
+						</li>
+						<li>The button in the <b>Interaction</b> column shows the number of interactions for each prey.
+						See the description below <b>Prey Specific Interaction Summary page</b>.
+						</li>
+						<li>Use <b>TAIR icon</b> button to visualize TAIR interactome information for the given prey protein.
+						It launches N-Browse Java Applet from TAIR. 
+						</li>
+						<li>Use <b>N icon</b> button to visualize our G-signaling interactome information for the given prey protein.
+						It launches N-Browse Java Applet on our server. 
+						</li>
+						<li><b>AtPID</b> link brings up the prey locus information from AtPID (<i>Arabidopsis 
+						thaliana</i> Protein Interactome Databse).
+						</li>
+						<li>Use the <b>Show preys with</b> pull-down menu to list prey proteins that 
+						interact with a certain number of baits. &mdash; <i>To be added</i> 
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li class="none"><b>Prey Specific Interaction Summary page</b>
+			<ul>
+				<li class="none">Lists all interactions with baits for a given prey protein. 
+				The prey TAIR locus and synonyms are listed at the top along with the number of 
+				interactions. Use the buttons above the table to change the view.
+					<ul>
+						<li><b>Show non-redundant bait protein list</b> button shows the non-redundant 
+						list of baits regardless of the libraries and cDNA positions.
+						</li>
+						<li><b>Show all interactions</b> button lists all interactions for the given prey including all 
+						combinations of libraries and prey cDNA positions. This is the view shown at first. 
+						The button toggles with <b>Show non-redundant bait protein list</b> button.
+						</li>
+						<li><b>Bait Locus</b> is linked to its entry in TAIR database for more information.
+						</li>
+						<li>Use <b>TAIR icon</b> button to visualize TAIR interactome information for the given prey protein.
+						It launches N-Browse Java Applet from TAIR. 
+						</li>
+						<li>Use <b>N icon</b> button to visualize our G-signaling interactome information for the given prey protein.
+						It launches N-Browse Java Applet on our server. 
+						</li>
+						<li><b>AtPID</b> link brings up the prey locus information from AtPID.
+						</li>
+						<li>Mouse over a library name to see the description of the library.
+						</li>
+						<li><b>Corr Coeff</b> shows the correlation coefficient values &mdash; <i>description to be added</i>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li class="none"><a href="./gsignal.cgi?list=INTERACTIONS"><b>Interactions</b></a>
+			<ul>
+				<li class="none">Lists all interactions between baits and preys in our G-signaling database.
+					<ul>
+						<li><b>Bait Locus</b> is linked to its entry in TAIR database for more information.
+						</li>
+						<li><b>Prey Locus</b> is linked to its entry in TAIR database for more information.
+						</li>
+						<li><b>Corr Coeff</b> shows the correlation coefficient values &mdash; <i>description to be added</i>
+						</li>
+						<li>Mouse over a library name to see the description of the library.
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</li>
+		<li class="none"><a href="./gsignal.cgi?list="NONE"><b>Search DB</b></a>
+			<ul>
+				<li class="none">Allows users to search through our G-signaling interactome database using names, Locus, 
+				and symbols (synonyms) for baits and preys, by choosing the library, or using keywords 
+				in the description.
+				</li>
+			</ul>
+		</li>
+		<li class="none"><a href="./gsignal.cgi?list=LINKS"><b>Links</b></a>
+			<ul>
+				<li class="none">Contains relevant and useful links.
+				</li>
+			</ul>
+		</li>
+	</ul>
+    <br>
+
+ 	<a name="library"></a>
+	<a class="small" href="#top">[Jump to the top]</a>
+	<h2>cDNA Library Information:</h2>
+	<ul>
+		<li class="none">The cDNA library information is available from 
+		<a href="./get_library.cgi">here</a>. 
+		A short description of each library can be also viewed by doing mouse-over 
+		on any library name in a table.
+		</li>
+	</ul>
+	<br>
+
+ 	<a name="data"></a>
+	[<a href="#top">Jump to the top</a>]
+	<h2>Data download:</h2>
+	<ul>
+		<li class="none">Use the buttons under the tables to download the data in a tab-delimited
+		table format (a text file). The data can be downloaded in two formats. 
+		The first table format includes all information as shown in the page. The second table format, 
+		called <b>"bait-prey table"</b>, includes only two columns, a bait protein name and the prey protein the bait interacts with.
+		</li>
+		<li class="none">See <b>N-Browse</b> description below how to upload the bait-prey table for a graphic presentation.
+		</li>
+	</ul>
+	<br>
+
+ 	<a name="nbrowse"></a>
+	[<a href="#top">Jump to the top</a>]
+	<h2>N-Browse:</h2>
+	<ul>
+		<li class="none">It is an open-source interactive graphical browser for biological network, 
+		developed originally by Kris Gunsalus and Huey-Ling Kao, currently by Monty Schulman, at New York 
+		University (<a target="_brank" href="http://www.gnetbrowse.org">http://www.gnetbrowse.org</a>).
+		</li>
+		<li class="none">We have installed and are running N-Browse2 on our server. Both of TAIR and our 
+		interactome data can be visualized with N-Browse by clicking on the <b>TAIR</b> and <b>N icon</b> buttons in the tables 
+		or using the links available in the <b>Link</b> page. N-Browse can be run as either Java Applet or Java Web Start. 
+		Applet version is launched from the tables, which runs within the Web browser (another Web page will be opened).
+		Java Web Start version is available in <a href="./gsignal.cgi?list=LINKS">the <b>Links</b> page</a>. It starts a Java application on your machine. 
+		</li>
+		<li class="none">When you click on the <b>N icon</b> button in a table, it launches N-Browse with the given bait 
+		or prey protein as the starting point and shows all proteins that are known to interact with. In the N-Browse window, 
+		a new starting gene can be provided in the <b>Search New Gene</b> field. Click on <b>GO</b> button to see 
+		the new interaction image.
+		</li>
+		<li class="none"><b>How to overlay our data over TAIR interactome using N-Browse:</b>
+			<ol>
+				<li>Download interaction information as a tab-delimited table format from our database 
+				by using <b>Download the bait-prey table</b> button. 
+				</li>
+				<li>Use <b>N-Browse at TAIR</b> link (in <a href="./gsignal.cgi?list=LINKS">the <b>Links</b> page</a>) to launch N-Browse with TAIR interactome. 
+				</li>
+				<li>In N-Browse, use <b>File/Open</b> <b>File</b> menu, choose the file you saved, 
+				type in the <b>Starting Point</b> gene name (e.g., Bait name), check <b>Cooperate with DB</b>, 
+				and click on <b>Browse</b> button.
+				</li>
+			</ol>
+		</li>
+
+		<li class="none"><b>N-Browse Applet compatibility issues:</b><br>
+		We tested N-Browse Applet (and confirmed it runs) in following OS's and Web browsers:
+			<ul>
+				<li>Macintosh OS X 10.6: Google Chrome, Safari (5.0.x, seems to be slower than Chrome)</li>
+				<li>Macintosh OS X 10.5.8: Safari (5.0.x), Google Chrome (5.0.375.125)</li>
+				<li>Macintosh OS X 10.4.11: Safari (4.1.1), FireFox (3.5.11, 3.6.8)</li>
+				<li>Windows XP: Internet Explore, FireFox, Google Chrome</li>
+				<li>Windows Vista: FireFox, Google Chrome</li>
+				<li>Windows 7: Internet Explore, FireFox</li>
+			</ul>
+		</li>
+		<li class="none">Depending on the OS and Web browser versions, compatibility may be different. 
+		If you have any problem with N-Browse Applet, please try different Web browser.
+		</li>
+		<li class="none">Trying to launch multiple N-Browse Applet does not work very well. 
+		<b><i>You need to close the first N-Browse window before opening another one. If you open one 
+		N-Browse window by clicking on an N (or TAIR) icon, close the window before you try to click on 
+		another N (or TAIR) icon.</i></b> You can avoid launching multiple N-Browse Applets by typing in gene name(s) 
+		in the Search New Gene field.
+		</li>
+		<li class="none">In N-Browse, you can also type in more than one gene names in the <b>Search New Gene </b>
+		field. This shows you all interactions involved with the given gene set.
+		</li>
+	</ul>
+	<br>
+
+ 	<a name="team"></a>
+	<a class="small" href="#top">[Jump to the top]</a>
+	<h2>Who we are:</h2>
+	<ul>
+		<li class="none"><b><i>Arabidopsis</i> G-Signaling Database Development Group</b>
+			<ul>
+				<li><a target="_blank" href="http://bioinfolab.unl.edu/emlab/index.html">Dr. Etsuko N. Moriyama</a> (University of Nebraska - Lincoln)
+				</li>
+				<li>Brandon Fulk (Web development, Undergraduate, University of Nebraska - Lincoln)
+				</li>
+				<li>Kelsey Augustin (Former Web programmer, Undergraduate, Nebraska INBRE Scholar, Wayne State College)
+				</li>
+				<li>The Nguyen (System Administrator, Professional Computer Solutions)
+				</li>
+			</ul>
+		</li>
+		<li class="none"><b><i>Arabidopsis</i> G-Signaling Interactome Research Group</b>
+			<ul>
+				<li><a target="_blank" href="http://www.bio.unc.edu/faculty/jones/">Dr. Alan M. Jones</a> (University of North Carolina at Chapel Hill)
+				</li>
+				<li>Dr. John Schwarz (University of North Carolina at Chapel Hill)
+				</li>
+				<li><a target="_blank" href="http://www.botanik.uni-koeln.de/261.html?&L=1">Dr. Joachim F. Uhrig</a> (University of Cologne, Germany)
+				</li>
+				<li>Dr. Karsten Klopffleisch (University of Cologne, Germany)
+				</li>
+				<li><a target="_blank" href="http://www.mpiz-koeln.mpg.de/english/research/schulzeLefertGroup/panstruga/index.html">Dr. Ralph Panstruga</a> (Max-Planck Institute)
+				</li>
+				<li>Matthew Tan Chong Yang (Undergraduate, National University of Singapore)
+				</li>
+			</ul>
+		</li>
+
+        <li class="none"><a target="_blank" href="./list_source.cgi"><b>[ Data source files ]</b></a>
+        </li>
+
+	</ul>
+	<br>
+
+	<a class="small" href="#top">[Jump to the top]</a>
+	<h2>Funds:</h2>
+	<ul>
+		<li><a target="_blank" href="http://brin.unmc.edu/">Nebraska IDeA Networks of Biomedical Research Excellence (INBRE)</a>
+		</li>
+	</ul>
+	<br>
+
+	<h2>Acknowledgements:</h2>
+	<ul>
+		<li class="none">We thank Monty Schulman for his kind help for trouble-shooting installing 
+		N-Browse2 on our local server.
+		</li>
+	</ul>
+	<br>
+	</div>
+
+</td></tr></table>
+</td></tr>
+</table></td></tr>
+</table>
+</div>
+</div>

@@ -56,37 +56,26 @@
 			<!-- -->
 			<td>[% protein.len %]</td>
 			<!-- Mutation -->
-		
-			[% USE fp = format('%0.3f') %]
-		<td[% IF protein.sig_mut %] class="significant"[% END %]>
-			[% fp(protein.corr_mut) %]
-		</td>	
-						<!-- Anatomy -->
-		<td[% IF protein.sig_ana %] class="significant"[% END %]>		
-			[% USE fp = format('%0.3f') %]
-		
-			[% fp(protein.corr_ana) %]
-		</td>	
-						<!-- Development -->
+                <td[% IF protein.sig_mut %] class="significant"[% END %]>
+                [% USE fp = format('%0.3f') %]
+                [% fp(protein.corr_mut) %]
+                </td>	
+            <!-- Anatomy -->
+                <td[% IF protein.sig_ana %] class="significant"[% END %]>		
+                [% USE fp = format('%0.3f') %]
+                [% fp(protein.corr_ana) %]
+                </td>	
+            <!-- Development -->
+                <td[% IF protein.sig_dev %] class="significant"[% END %]>
+                [% USE fp = format('%0.3f') %]
+                [% fp(protein.corr_dev) %]
+                </td>	
+            <!-- Stimulus -->
+                <td[% IF protein.sig_stim %] class="significant"[% END %]>
+                [% USE fp = format('%0.3f') %]
+                [% fp(protein.corr_stim) %]
+                </td>
 			
-
-			
-			[% USE fp = format('%0.3f') %]
-		<td[% IF protein.sig_dev %] class="significant"[% END %]>
-			[% fp(protein.corr_dev) %]
-		</td>	
-			
-						<!-- Stimulus -->
-			
-
-			
-			[% USE fp = format('%0.3f') %]
-		<td[% IF protein.sig_stim %] class="significant"[% END %]>
-			[% fp(protein.corr_stim) %]
-		</td>
-			
-			
-	
 		</tr>
 	[% END %]
 	</tbody>

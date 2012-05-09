@@ -50,12 +50,15 @@
         <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/cytoscape_web/js/min/cytoscapeweb.min.js"></script>
         <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/js/interactome.viewer.js"></script>
         
+
+    [% END %]
+    
+    [% IF ( view == 'tree' ) %]    
         <!-- jsPhyloSVG -->
         <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/js/raphael-min.js" ></script>
         <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/js/jsphylosvg-min.js"></script> 
         <script type="text/javascript" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/js/jsphylo.viewer.js"></script>
     [% END %]
-    
 	</head>
 	
 	
@@ -75,22 +78,23 @@
 		    <ul> 
 			  <li class="nav-menuList"><a href="http://bioinfolab.unl.edu/emlab/Gsignal/index.pl">Home</a></li> 
 			  <li class=
-			    [% IF (view == 'baits' || bid )%]
+			    [% IF ( (view == 'baits') || bid )%]
 			        "active"
 			    [% ELSE %]
 			        "nav-menuList"
 			    [% END %]
 			    ><a href="/cgi-bin/gsignal/development/gsignal/find_interactions.cgi?view=baits">Baits</a></li> 
 			  <li class=
-                [% IF (view == 'preys' || p_locus )%]
+                [% IF ( (view == 'preys') || (view == 'p_locus') )%]
 			        "active"
 			    [% ELSE %]
 			        "nav-menuList"
 			    [% END %]
 			    ><a href="/cgi-bin/gsignal/development/gsignal/find_interactions.cgi?view=preys">Preys</a></li> 
-			  <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=NONE">Search DB</a></li> 
-              <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=HELP">Help</a></li> 
-              <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignalTest.cgi?list=LINKS">Links</a></li> 
+			  <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignal/find_interactions.cgi?view=search">Search</a></li> 
+<!--			  <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignal/find_interactions.cgi?view=tree">Tree of Viridiplantae</a></li> -->
+              <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignal/find_interactions.cgi?view=help">Help</a></li> 
+              <li class="nav-menuList"><a href="/cgi-bin/gsignal/development/gsignal/find_interactions.cgi?view=links">Links</a></li> 
 			</ul> 
 			<!-- end navigation --> 
           </div> 

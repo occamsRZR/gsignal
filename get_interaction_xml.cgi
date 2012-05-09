@@ -16,6 +16,8 @@ use Template;
 
 my $query = new CGI;
 my $locus = $query->param('locus');
+my $type = $query->param('type');
+
 
 #$locus = "AT1G01040";
 #####
@@ -64,7 +66,7 @@ sub get_data{
     #######
     ###TODO
     #######
-    ### Reduce this query so we can also get correlation coefficients
+    ### Redo this query so we can also get correlation coefficients
     my $sql = "
         SELECT
 	        Bait_locus,
@@ -76,10 +78,20 @@ sub get_data{
         WHERE
             bait.Bait_ID = interact.Bait_ID AND
             (bait.Bait_locus = '$locus') OR ( interact.Prey_locus = '$locus')
-        GROUP BY
-            Prey_locus
-        ;
             ";
+    # If this is a bait, group by preys
+    if($type eq "bait"){
+        $sql .= "        
+        GROUP BY
+            Prey_locus;";
+    }
+    # If this is a prey, group by baits
+    elsif($type eq "prey"){
+        $sql .= "
+        GROUP BY
+            bait.Bait_ID;";
+    }
+    
     
     # Prepare and execute SQL statement
     my $sth = $dbh->prepare($sql) or die "Could not prepare statement: " . DBI->errstr;

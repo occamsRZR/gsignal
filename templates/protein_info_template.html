@@ -1,4 +1,11 @@
 </br>
+<h1 style="text-align:center; font-size:35;">
+[% IF bid %]
+Bait - [% info(id).name %]
+[% ELSE %]
+Prey  - [% info(id).locus %]
+[% END %]
+</h1>
 
 <div id="main" class="round">
 <a href="#"><img id="arrow" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/left_arrow.png" width="13"></a> Protein info and Interaction
@@ -17,9 +24,20 @@
                 <locus>[% info(id).locus %]</locus></br>
             <strong>Number of Interactions:</strong> [% info(id).int %]</br>
             <strong>Length:</strong> [% info(id).aa %]aa</br>
-            <strong>Description:</strong> [% info(id).desc %]</br></br>
-            
-       
+            <strong>Description:</strong> [% info(id).desc %]</br>
+            <a target="_blank" href="http://www.arabidopsis.org/servlets/TairObject?name=[% info(id).locus %]&type=locus" verticle-align="center">Link to TAIR</a><br /></br>
+            <!-- Interaction -->
+            <strong>Interaction:</strong><br />
+            <a target="_blank" href="http://aquila.bio.nyu.edu/cgi-bin/NBrowseAppletProd\?-d=TAIR&-q=[% info(id).locus %]"><img src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/logoSmall-tair2.gif" alt="Tair_logo" class="visBrowserLogo" align="middle" ></a><a target="_blank" href="http://bioinfolab.unl.edu/cgi-bin/nbrowse2/NBrowseAppletProd?-d=NBROWSE2_TEST2&-q=[% info(id).locus %]" ><img src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/n_logo-small.gif" alt="N_logo" class="visBrowserLogo" align="middle" ></a>
+            <a target="_blank" href="http://www.megabionet.org/atpid/webfile/simple_detail.php?pro=[% info(id).locus %]" verticle-align="center">AtPID</a>
+            <br />
+            <!-- Regulatory Info -->    
+            <strong>Regulatory Information:</strong><br />            
+            <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtcisDB/atcisview.html?id=[% info(id).locus %]"> AtcisDB</a></br>
+            <a target="_blank" href="http://arabidopsis.med.ohio-state.edu/AtTFDB/tfsummary.html?locusid=[% info(id).locus %]"> AtTFDB</a></br>
+            <a target="_blank" href="http://atted.jp/data/locus/[% info(id).locus %].shtml"> ATTED</a>
+            <br />
+            <br />
             Cuttoff values and significant interactions:</br>
      
             <table class="cutoffs" summary="All the cutoff values">
@@ -58,4 +76,7 @@
     <!-- This is the svg Canvas (phylogenetic tree) -->    
 
     <!--                <div id="svgCanvas"> </div> -->
+    
 </table>
+
+

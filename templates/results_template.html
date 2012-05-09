@@ -1,0 +1,58 @@
+<table cellspacing="1" id="dataTable" class="tablesorter">	
+
+        <thead>        
+            <th>Interaction ID</th>
+            <th>Bait Locus</th>
+            <th>Bait Name</th>
+            <th>Prey Locus</th>
+            <th>Prey Description</th>
+            <th>Mut.</th>
+            <th>Ana.</th>
+            <th>Dev.</th>
+            <th>Stim.</th>          
+        </thead>
+        
+        <tbody>
+
+[% FOREACH result IN results.pairs %]
+    <tr>
+        <td colspan="9">
+        <b>Query: [% result.key %]</b>
+        </td>
+    </tr>
+            [% FOREACH protein IN result.value %]
+                <tr>
+                    <td>[% protein.bp_id %]</td>
+                    <td>[% protein.bait_locus %]</td>
+                    <td>[% protein.bait_name %]</td>
+                    <td>[% protein.prey_locus %]</td>
+                    <td>[% protein.short_desc %]</td>
+                    <!-- Mutation -->
+                        <td[% IF protein.sig_mut %] class="significant"[% END %]>
+                        [% USE fp = format('%0.3f') %]
+                        [% fp(protein.corr_mut) %]
+                        </td>	
+                    <!-- Anatomy -->
+                        <td[% IF protein.sig_ana %] class="significant"[% END %]>		
+                        [% USE fp = format('%0.3f') %]
+                        [% fp(protein.corr_ana) %]
+                        </td>	
+                    <!-- Development -->
+                        <td[% IF protein.sig_dev %] class="significant"[% END %]>
+                        [% USE fp = format('%0.3f') %]
+                        [% fp(protein.corr_dev) %]
+                        </td>	
+                    <!-- Stimulus -->
+                        <td[% IF protein.sig_stim %] class="significant"[% END %]>
+                        [% USE fp = format('%0.3f') %]
+                        [% fp(protein.corr_stim) %]
+                        </td>
+                </tr>
+            [% END %]
+        
+
+
+[% END %]
+
+        </tbody>
+    </table>
