@@ -1,3 +1,24 @@
+table.treeResults {
+	font-size: 11px;
+	border: 1px solid #000;
+}
+
+table.treeResults th {
+	border: 1px solid #000;
+	height: 46px;
+	width : 40px;
+}
+
+table.treeResults tr {
+	border: 2px solid #000;
+	height: 30px;
+}
+
+table.treeResults td {
+	border: 1px solid #000;
+	text-align: center;
+}
+
 table.tablesorter {
 	font-size: 11px;
 	background-color: #4D4D4D;
