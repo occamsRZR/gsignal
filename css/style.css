@@ -113,14 +113,19 @@ td.general {
 	font-size: 11px;
 }
 
+
 td.sidebar {
     width: 210px;
     padding: 1em;
     vertical-align: top;
     background: #C2ED78;
-    font-size:10px;
+    font-size:12px;
     margin-bottom: 2;
 }
+a.total {
+    font_size:14px;	
+}
+	
 table.cutoffs {
 
     font-size: 11px;
@@ -128,6 +133,9 @@ table.cutoffs {
 td.cutoffs {
     width: 50px;
     text-align: center;
+}
+#content h4 {
+	text-align: center;
 }
 
 
