@@ -1,14 +1,21 @@
 </br>
-<h1 style="text-align:center; font-size:35;">
+<div id="main" class="round">
+</br>
+<h1 style="text-align:center; font-size:28;">
 [% IF bid %]
-Bait - [% info(id).name %]
+Bait Protein Information - [% info(id).name %]
 [% ELSE %]
-Prey  - [% info(id).locus %]
+Prey Protein Information - [% info(id).locus %]
 [% END %]
 </h1>
-
-<div id="main" class="round">
+<h4>
+[% info(id).int %] Interactions
+</br>
+<a href="./find_interactions.cgi?download=1&[% query_string %]">Download Table</a>
+</br>
+</h4>
 <a href="#"><img id="arrow" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/left_arrow.png" width="13"></a> Protein info and Interaction
+
 <table id="info" summary="Protein information" style="display:none">
     <tr>
 

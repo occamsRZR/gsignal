@@ -1,4 +1,27 @@
-#!/usr/bin/perl -T
+#!/usr/bin/perl 
+##################################################
+#   find_interactions.cgi
+#
+# DESCRIPTION: this is basically a monolithic cgi script
+#               that enables us to view the G-Signaling
+#               Interactome Datbase
+#   Written by :
+#           Brandon Fulk
+#   Based off source code by:
+#           Etsuko Moriyama
+#           Kelsey Augustin
+#   Last Updated:
+#           5/11/12
+#
+# IN
+#      $query:  this is the query from the CGI
+#               the parameters are listed in the first block
+#               after the `use` block
+#		                        
+# OUT
+#       Content type is HTML
+##################################################
+
 
 BEGIN{
     unshift @INC, "./modules/lib64/perl5/site_perl/5.8.8/x86_64-linux-thread-multi";
@@ -12,6 +35,8 @@ use Template;
 use CGI;
 use DBI;
 use Data::Dumper;
+use IO::File;
+use CGI::Carp qw(fatalsToBrowser);
 
 my $query = new CGI;
 my $view = $query->param('view');
@@ -22,6 +47,7 @@ my $sig = $query->param('sig');
 my $q = $query->param('q');
 my $search = $query->param('search');
 my $download = $query->param('download');
+my $query_string = $ENV{'QUERY_STRING'};
 
 
 #####
@@ -80,14 +106,34 @@ process();
 #       Nothing is returned, just processed and displayed
 ##################################################	
 sub process{
-    my ($info_sql, $data_sql, $proteins, $info);
-
+    my ($info_sql, $data_sql, $proteins, $info, $last_page, $date);
     
-    unless(($view eq 'help') || ($view eq 'tree') || ($view eq 'links') || ($view eq 'search') || ($q)){
+    # If we need to download the page, get certain info
+    if($download){
+        # Find out what the last page was
+        ($last_page) = $query_string =~ /^download\=1\&([\w\W]+)/;  
+        my @time_data = localtime(time);
+        my $year = $time_data[5] + 1900;
+        my $month = $time_data[4] + 1;
+        my $day = $time_data[3];
+        my $hour = $time_data[2];
+        my $minute = $time_data[1];
+        my $seconds = $time_data[0];
+        $date = $year . '_' . $month . '_' . $day . '-' . $hour . '_' . $minute . '_' . $seconds;
+        # We need to build the SQLs 
+        ($info_sql, $data_sql) = build_queries();
+        $proteins = get_data($data_sql);
+        $info = get_info($info_sql);
+        download_data($date, $last_page, $proteins);
+
+    }
+    # Run the data methods unless certain pages are defined
+    unless(($view eq 'help') || ($view eq 'tree') || ($view eq 'links') || ($view eq 'search') || $q || $download){
         # We need to build the SQLs 
        ($info_sql, $data_sql) = build_queries();
         $proteins = get_data($data_sql);
         $info = get_info($info_sql);
+
     }
     
     # Define all of the templates we are going to be using
@@ -102,14 +148,20 @@ sub process{
     my $links       =  'templates/links_template.html';   
     my $search_tmp  =  'templates/search_template.html';
     my $results_tmp =  'templates/results_template.html';
+    my $download_tmp = 'templates/download_template.html';
+    
 
+    
     my $vars = {
-	    'proteins' => $proteins,
-	    'info'     => $info,
-	    'view'     => $view,
-	    'bid'      => $bid,
-	    'p_locus'  => $p_locus,
-	    'query'         => $q
+	    'proteins'          => $proteins,
+	    'info'              => $info,
+	    'view'              => $view,
+	    'bid'               => $bid,
+	    'p_locus'           => $p_locus,
+	    'query'             => $q,
+	    'query_string'      => $query_string,
+	    'last_page'         => $last_page,
+	    'date'              => $date
     };
     my $template = Template->new();
 
@@ -117,9 +169,11 @@ sub process{
         or die "Template process failed!\n", $template->error(), "\n";
     
 
-    
+    if($download){
+        $template->process($download_tmp, $vars);
+    }
     # If view is defined, process the summary table
-    if($view){
+    elsif($view){
 
         # If this is a tree
         if($view eq 'tree'){
@@ -144,7 +198,7 @@ sub process{
         # Else if this is a links page
         elsif($view eq "links"){
             $template->process($links, $vars) 
-                or die "Template process failed!\n", $template->error(), "\n";     
+                or die "Template process failed!\n", $template->error(), "\n";  
         }
         # Else if this is a links page
         elsif($view eq "search"){
@@ -152,6 +206,7 @@ sub process{
                 or die "Template process failed!\n", $template->error(), "\n";     
         }
     }
+    # Else if there is a query
     elsif($q){
         my @queries = parse_search_query($q);
         my @sql_queries = build_search_queries(@queries);
@@ -164,9 +219,7 @@ sub process{
         $template->process($results_tmp, $vars) 
             or die "Template process failed!\n", $template->error(), "\n";  
     }
-    elsif($download){
-        
-    }
+    # Else, we just display the default page
     else{
         # This is the info pane at the top for the protein pages
         $template->process($protein_info, $vars) 
@@ -175,7 +228,7 @@ sub process{
         $template->process($protein_table, $vars) 
             or die "Template process failed!\n", $template->error(), "\n";
     }
-    
+    # Print header
     $template->process($footer) 
         or die "Template process failed!\n", $template->error(), "\n";
 
@@ -1004,18 +1057,52 @@ sub get_search_data(){
 #       $file_name  :   the filename of the file we want to download
 ##################################################
 sub download_data{  
+    my $date = shift;
+    my $last_page = shift;
+    my $proteins_ref = shift;
+    
+    my @proteins = @$proteins_ref;
     
     # clean up the directory first (remove one day or older files
     system("find ./tmp/file*.txt -mtime +1 -delete;");
 
-    my $job = $$; # the process id is used as the job ID
-    my $file = "file$job.txt";
+    my $file = "file$date.txt";
     my $file1 = "./tmp/$file";
     my $file3 = "/emlab/Gsignal/cgi/tmp/$file";
     
-    my $buffer;
-    $ENV{'REQUEST_METHOD'} =~ tr/a-z/A-Z/;
+    my $FILE;
     
-    read(STDIN, $buffer, $ENV{'CONTENT_LENGTH'});
-
+    
+    #system("touch /emlab/Gsignal/cgi/tmp/hello");
+    
+    open($FILE, '>', "$file1") 
+        or die "Cannot open $file1: $!\n";
+    
+    print $FILE "Locus\tTAIR Description\tLength\tInteractions\tSignificant Mutation\tSignificant Anatomy\tSignificant Development\tSignificant Stimulation\n";
+    
+    
+    
+    # For each of the proteins, print the file.
+    foreach my $protein_ref(@proteins){
+        my %protein = %$protein_ref;
+        print $FILE "$protein{bait_locus}";
+        print "\t";
+        print $FILE $protein{bait_locus};
+        print "\t";
+        print $FILE $protein{bait_locus};
+        print "\t";
+        print $FILE $protein{bait_locus};
+        print "\t";
+        print $FILE $protein{bait_locus};
+        print "\t";
+        print $FILE $protein{bait_locus};
+        print "\t";
+        print $FILE $protein{bait_locus};
+        print "\t";
+        print $FILE $protein{bait_locus};
+        print "\n";
+    }
+    close($FILE)
+        or die "Could not close this file! Reason: $!\n";
+    return 0;
 }

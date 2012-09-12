@@ -1,12 +1,7 @@
-</br>
-<h1 style="text-align:center; font-size:35;">
-[% IF view == 'baits' %]
-Bait summary - 24 proteins
-[% ELSIF view == 'preys' %]
-Prey summary - 431 proteins
-[% END %]
-</h1>
-<table class="info" summary="Protein information">
+<br>
+<table class="info round" summary="Protein information">
+
+
 	<tr>
 		<td class="main round">
 			
@@ -14,16 +9,37 @@ Prey summary - 431 proteins
 		</td>
 		
 		<td class="general">
+		        </br>
+        <h1 style="text-align:center; font-size:28;">
+        [% IF view == 'baits' %]
+        Bait Summary - 24 Proteins
+        [% ELSIF view == 'preys' %]
+        Prey Summary - 431 Proteins
+        [% END %]
+        </h1>
+        
+            <h4 style="font-size:17;">
+
+                <a href="./find_interactions.cgi?download=1&[% query_string %]">Download Table</a>
+            </h4>
+
 
 			<img id="#visBrowserLogo" src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/logo-tair2.gif" alt="N_logo" width="25" height="18" align="bottom">
 			Launch N-Browse w/ TAIR interactome. 
-			</br>
 			<img src="http://bioinfolab.unl.edu/emlab/Gsignal/files/images/n_logo.gif" alt="N_logo" width="14" height="18" align="bottom">
 			Launch N-Browse w/ G-signaling interactome.
+			</br>
+			Click the number of interactions link to view all interactions by         
+			[% IF view == 'baits' %]
+            baits.
+            [% ELSIF view == 'preys' %]
+            preys.
+            [% END %]
 		</td>
-		                
+
+	                
         <td class="sidebar round"> 
-			<strong>Number of Interactions:</strong> [% info(id).int %]</br>
+			<strong>Number of Interactions:</strong><a href="./find_interactions?view=all" class="total">[% info(id).int %]</a></br>
 			
 	   
             Cuttoff values and significant interactions:</br>
